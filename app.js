@@ -124,6 +124,18 @@ function frameAt(p) {
   return F.count - 1;
 }
 
+// подгон кегля героя по реальной ширине самой длинной строки (курсив шире прямого)
+function fitHero() {
+  const h1 = $('.cap-hero h1'), lines = [...h1.querySelectorAll('.ln')];
+  if (portrait()) { stage.style.removeProperty('--herofs'); h1.style.fontSize = ''; return; }
+  const avail = parseFloat(getComputedStyle(stage).getPropertyValue('--herow')) || h1.clientWidth;
+  const fs = parseFloat(getComputedStyle(h1).fontSize);
+  const widest = Math.max(...lines.map(l => [...l.children].reduce((w, c) => w + c.getBoundingClientRect().width, 0) + (l.children.length - 1) * fs * .25));
+  const byHeight = (innerHeight - 330) / 3.1;
+  stage.style.setProperty('--herofs', Math.floor(Math.max(40, Math.min(fs * avail * .96 / widest, byHeight, 140))) + 'px');
+}
+document.fonts.ready.then(() => fitHero());
+
 function buildWalk() {
   walkTL && walkTL.scrollTrigger.kill(), walkTL && walkTL.kill();
   plan = buildPlan();
@@ -139,6 +151,7 @@ function buildWalk() {
   stage.style.setProperty('--capl', capLeft + 'px');
   // кегль: самая длинная строка «топовые коктейли» ≈ 7.2 em; по высоте три строки + чипы + кнопка
   stage.style.setProperty('--herofs', Math.round(Math.max(40, Math.min(herow / 7.4, (innerHeight - 330) / 3.1, 128))) + 'px');
+  fitHero();
   gsap.set('.cap, .cap-hero', { yPercent: portrait() ? 0 : -50 });
 
   const tl = gsap.timeline({
