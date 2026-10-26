@@ -374,3 +374,11 @@ form.done .sub-ok{display:block}
 /* герой в том же стиле, что подписи шагов: курсив, обычная насыщенность */
 .walk .cap-hero .display,.walk .cap-hero .display em{font-weight:500;letter-spacing:-.01em}
 .walk .cap-hero .display em{font-style:italic}
+/* крестик попапа: всегда в правом верхнем углу карточки */
+.pop-card .pop-x{position:absolute;right:14px;top:14px;z-index:3;width:40px;height:40px;padding:0;border-radius:50%;background:rgba(255,255,255,.92);color:var(--ink);font:300 28px/40px var(--ft);text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.pop-card .pop-x:hover{background:#fff}
+.pop-title{margin-right:40px}
+/* мобильная обложка: без бежевой полосы под шапкой */
+@media(max-width:900px),(orientation:portrait){
+  .walk .stage::before{height:110px;background:linear-gradient(rgba(246,234,217,.55),rgba(246,234,217,0))}
+}

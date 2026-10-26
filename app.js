@@ -51,7 +51,7 @@ function sizeFilm() {
   g.imageSmoothingQuality = 'high';
   if (portrait()) {
     const s = Math.max(W / (F.w * .5), H * .62 / F.h), w = F.w * s;
-    box = { w, h: F.h * s, x: W / 2 - w * .58, y: Math.max(56, H * .06) };
+    box = { w, h: F.h * s, x: W / 2 - w * .58, y: 0 }; // кадр с самого верха, шапка лежит поверх обложки
   } else {
     const s = Math.max(W / F.w, H / F.h);
     // кадр чуть ниже центра: крышка бутылки не уходит под меню, верх растворяется в фон
