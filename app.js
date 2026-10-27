@@ -50,8 +50,9 @@ function sizeFilm() {
   g.setTransform(dpr, 0, 0, dpr, 0, 0);
   g.imageSmoothingQuality = 'high';
   if (portrait()) {
-    const s = Math.max(W / (F.w * .5), H * .62 / F.h), w = F.w * s;
+    const s = Math.max(W / (F.w * (W >= 600 ? 1 : .5)), H * (H < 740 ? .42 : .5) / F.h), w = F.w * s; // планшет: кадр целиком по ширине; низкие телефоны: обложка ниже
     box = { w, h: F.h * s, x: W / 2 - w * .58, y: 0 }; // кадр с самого верха, шапка лежит поверх обложки
+    stage.style.setProperty('--imgb', Math.round(F.h * s - 34) + 'px'); // текст начинается сразу под картинкой
   } else {
     const s = Math.max(W / F.w, H / F.h);
     // кадр чуть ниже центра: крышка бутылки не уходит под меню, верх растворяется в фон
@@ -127,14 +128,22 @@ function frameAt(p) {
 // подгон кегля героя по реальной ширине самой длинной строки (курсив шире прямого)
 function fitHero() {
   const h1 = $('.cap-hero h1'), lines = [...h1.querySelectorAll('.ln')];
-  if (portrait()) { stage.style.removeProperty('--herofs'); h1.style.fontSize = ''; return; }
+  if (portrait()) { stage.style.removeProperty('--herofs'); h1.style.fontSize = ''; placeHeroMobile(); return; }
   const avail = parseFloat(getComputedStyle(stage).getPropertyValue('--herow')) || h1.clientWidth;
   const fs = parseFloat(getComputedStyle(h1).fontSize);
   const widest = Math.max(...lines.map(l => [...l.children].reduce((w, c) => w + c.getBoundingClientRect().width, 0) + (l.children.length - 1) * fs * .25));
   const byHeight = (innerHeight - 330) / 3.1;
-  stage.style.setProperty('--herofs', Math.floor(Math.max(40, Math.min(fs * avail * .96 / widest, byHeight, 140))) + 'px');
+  stage.style.setProperty('--herofs', Math.floor(Math.max(40, Math.min(fs * avail * .96 / widest, byHeight, 170))) + 'px');
+}
+// телефон/планшет: оффер под картинкой, но если не влезает по высоте, поднимаем его на низ картинки
+function placeHeroMobile() {
+  if (!portrait()) return;
+  const imgb = Math.round(box.h - 34), hh = $('.cap-hero').offsetHeight, SH = stage.clientHeight; // высота сцены (100svh), а не innerHeight
+  const top = Math.max(Math.round(SH * .2), Math.min(imgb, SH - hh - 20));
+  stage.style.setProperty('--herotop', top + 'px');
 }
 document.fonts.ready.then(() => fitHero());
+new ResizeObserver(() => placeHeroMobile()).observe($('.cap-hero'));
 
 function buildWalk() {
   walkTL && walkTL.scrollTrigger.kill(), walkTL && walkTL.kill();
@@ -146,7 +155,7 @@ function buildWalk() {
   const capLeft = Math.max(16, Math.min(96, W * .06));
   stage.style.setProperty('--colw', Math.max(240, box.x + box.w * .42 - capLeft - 40) + 'px');
   // колонка героя: от левого поля до бутылки (левый край ~62% кадра), но не шире 46% экрана
-  const herow = Math.max(260, Math.min(W * .46, 720, box.x + box.w * .6 - capLeft - 48));
+  const herow = Math.max(260, Math.min(W * .46, W > 1800 ? 1000 : 720, box.x + box.w * .6 - capLeft - 48));
   stage.style.setProperty('--herow', herow + 'px');
   stage.style.setProperty('--capl', capLeft + 'px');
   // кегль: самая длинная строка «топовые коктейли» ≈ 7.2 em; по высоте три строки + чипы + кнопка

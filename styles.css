@@ -382,3 +382,16 @@ form.done .sub-ok{display:block}
 @media(max-width:900px),(orientation:portrait){
   .walk .stage::before{height:110px;background:linear-gradient(rgba(246,234,217,.55),rgba(246,234,217,0))}
 }
+/* мобилка: оффер и подписи сразу под обложкой, а не у нижнего края */
+@media(max-width:900px),(orientation:portrait){
+  .walk .cap,.walk .cap.cap-hero{top:var(--imgb,50svh);bottom:auto}
+  .walk .shade{background:linear-gradient(0deg,var(--sun) 0%,var(--sun) calc(100% - var(--imgb,50svh) - 10px),rgba(246,234,217,0) calc(100% - var(--imgb,50svh) + 70px))}
+}
+@media(max-width:900px),(orientation:portrait){
+  .walk .cap.cap-hero{top:var(--herotop,var(--imgb,50svh))}
+  .walk .cap-hero .display{font-size:clamp(38px,min(11vw,7.2svh),76px)}
+  .fl-buy .chip{height:44px}
+}
+@media(max-height:700px) and (orientation:portrait){.hero-facts li:nth-child(4){display:none}.hero-facts{margin-top:12px}.hero-cta{margin-top:12px}}
+/* очень широкие мониторы: служебные элементы крупнее */
+@media(min-width:2200px) and (orientation:landscape){.nav,.hero-facts,.hero-cta,.walk .rail{zoom:1.4}.walk .cap p:not(.step):not(.eyebrow){font-size:26px}}
