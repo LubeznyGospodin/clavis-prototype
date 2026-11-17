@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Рецепт · CLAVIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main"><section class="page-hero"><div class="wrap" id="box"></div></section></main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const r = byId(RECIPES, param('id'));
+  if (!r) { location.replace('404.html'); return; }
+  const p = byId(PRODUCTS, r.product);
+  document.title = `${r.name} · рецепт CLAVIS`;
+  $('#box').innerHTML = `<div class="crumbs"><a href="index.html">Главная</a> / <a href="recepty.html">Рецепты</a></div>
+    <div class="recipe">
+      <div class="recipe__img"><img src="${r.img}" alt="${esc(r.name)}"></div>
+      <div>
+        <div class="eyebrow">${KINDS[r.kind]}${r.alcohol ? ' · 18+' : ' · без алкоголя'}</div>
+        <h1 style="font-size:clamp(40px,5vw,64px)">${esc(r.name)}</h1>
+        <div class="kv"><span>Бокал: <b>${r.glass}</b></span><span>Метод: <b>${r.method}</b></span><span>Время: <b>${r.time}</b></span></div>
+        <h3 style="margin-bottom:10px">Ингредиенты</h3>
+        <ul class="list-clean">${r.items.map((i) => `<li>${esc(i)}</li>`).join('')}</ul>
+        <h3 style="margin:28px 0 10px">Как готовить</h3>
+        <ol>${r.steps.map((s) => `<li>${esc(s)}</li>`).join('')}</ol>
+        <div class="card" style="display:grid;grid-template-columns:90px 1fr;gap:18px;align-items:center;margin-top:30px">
+          <div class="arch" style="--tint:${mix(p.color)}">${bottleEl(p)}</div>
+          <div><div class="eyebrow" style="margin-bottom:6px">Основа рецепта</div><a class="serif" style="font-size:24px;text-decoration:none" href="tovar.html?id=${p.id}">${esc(p.name)}</a>
+            <div class="btns" style="margin-top:12px">${p.price ? '<button class="btn btn--wine btn--sm" id="add" type="button">В корзину</button>' : ''}<a class="btn btn--ghost btn--sm" href="tovar.html?id=${p.id}">Карточка товара</a></div></div>
+        </div>
+      </div>
+    </div>`;
+  $('#add')?.addEventListener('click', () => { cart.add(p.id); toast('Добавили в корзину'); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Для дома · CLAVIS</title>
+<meta name="description" content="Лимонады детям и коктейли взрослым из одной бутылки. Подберите набор CLAVIS под ваш праздник за 20 секунд.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero" style="padding-bottom:28px">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Главная</a> / Для дома</div>
+      <div class="eyebrow">Топ-рецепты для дома</div>
+      <h1>Напиток к празднику за две минуты</h1>
+      <p class="lead">Основа, лёд и содовая. Шейкер не нужен. Одной бутылки хватит на 25 стаканов.</p>
+    </div>
+  </section>
+  <section class="section" style="padding-top:0"><div class="wrap grid grid--4" id="top"></div></section>
+
+  <section class="section section--paper" id="quiz">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Подбор набора</div><h2>Четыре вопроса, и набор в корзине</h2></div></div>
+      <div class="quiz" id="quizBox"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Вкусы для дома</div><h2>Коктейльная серия и любимые вкусы</h2></div><a class="link" href="katalog.html">Весь каталог</a></div>
+      <div class="products" id="home"></div>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap split">
+      <div class="split__media"><img src="img/format-lemonade.webp" alt="Лимонад с основой CLAVIS" loading="lazy"></div>
+      <div>
+        <div class="eyebrow">Одна бутылка на всю семью</div>
+        <h2 style="margin-bottom:18px">Лимонад детям, хайбол взрослым</h2>
+        <p class="lead">Детям наливаем 30 мл основы и 150 мл содовой. Взрослым добавляем 40 мл крепкого. Вкус один, напитки разные.</p>
+        <a class="btn" href="recepty.html?kind=lemonade" style="margin-top:12px">Рецепты лимонадов</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid--3">
+      <div class="card"><h3>Доставка</h3><p class="muted">Ozon Доставка в пункты выдачи или СДЭК. Стоимость и срок покажем при оформлении.</p></div>
+      <div class="card"><h3>Оплата</h3><p class="muted">Картой или через СБП на сайте. Чек приходит на почту.</p></div>
+      <div class="card"><h3>Возврат</h3><p class="muted">По правилам продажи товаров дистанционно. <a class="link" href="dostavka.html">Подробнее</a></p></div>
+    </div>
+  </section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  $('#top').innerHTML = RECIPES.filter((r) => r.where === 'home').slice(0, 4).map(recipeCard).join('');
+  const homeIds = ['wildberry-spritz', 'watermelon-negroni', 'special-bellini', 'passion-vanilla-tiny', 'oblepiha-med-limon', 'klyukva-citrus-rozmarin', 'mango-marakuya-kokos', 'zhimolost-zemlyanika-smorodina'];
+  $('#home').innerHTML = homeIds.map((id) => productCard(byId(PRODUCTS, id))).join('');
+
+  const Q = [
+    { k: 'guests', q: 'Сколько человек будет на празднике?', o: [['2–4', 1], ['5–10', 2], ['Больше 10', 3]] },
+    { k: 'sober', q: 'Сколько гостей не пьёт алкоголь?', o: [['Никто', 'none'], ['Часть гостей', 'some'], ['Все', 'all']] },
+    { k: 'drink', q: 'Какой алкоголь будет на столе?', o: [['Игристое', 'sparkling'], ['Джин или водка', 'gin'], ['Ром или виски', 'rum'], ['Без алкоголя', 'zero']] },
+    { k: 'taste', q: 'Какие вкусы вы любите?', o: FAMILIES.map((f) => [f.name, f.id]) },
+  ];
+  const ans = {}; let step = 0;
+  function view() {
+    const box = $('#quizBox');
+    if (step < Q.length) {
+      const q = Q[step];
+      box.innerHTML = `<div class="quiz__bar"><i style="width:${(step / Q.length) * 100}%"></i></div><div class="eyebrow">Вопрос ${step + 1} из ${Q.length}</div><h3>${q.q}</h3>
+        <div class="quiz__opts">${q.o.map(([t, v]) => `<button class="chip" type="button" data-v="${v}">${t}</button>`).join('')}</div>
+        ${step ? '<button class="link" type="button" data-back style="background:none;border:0;cursor:pointer">Назад</button>' : ''}`;
+      return;
+    }
+    const pick = recommend();
+    const recs = RECIPES.filter((r) => pick.some((p) => p.id === r.product)).slice(0, 3);
+    box.innerHTML = `<div class="quiz__bar"><i style="width:100%"></i></div><div class="eyebrow">Ваш набор</div><h3 style="margin-bottom:22px">${pick.length} ${pick.length === 1 ? 'бутылка' : 'бутылки'} CLAVIS на ${{ 1: 'компанию до четырёх человек', 2: 'компанию до десяти человек', 3: 'большую компанию' }[ans.guests]}</h3>
+      <div class="products" style="margin-bottom:26px">${pick.map(productCard).join('')}</div>
+      ${recs.length ? `<p class="muted">Что приготовить: ${recs.map((r) => `<a class="link" href="recept.html?id=${r.id}">${esc(r.name)}</a>`).join(', ')}. Ещё понадобятся лёд и содовая${ans.drink === 'sparkling' ? ', игристое' : ans.drink === 'gin' ? ', джин' : ans.drink === 'rum' ? ', ром' : ''}.</p>` : ''}
+      <div class="btns" style="margin-top:20px"><button class="btn btn--wine" type="button" data-cart>Положить набор в корзину · ${rub(pick.reduce((a, p) => a + p.price, 0))}</button><button class="btn btn--ghost" type="button" data-again>Пройти заново</button></div>
+      <p class="note" style="margin-top:16px">Скоро рядом появится консультант на ИИ: он задаст те же вопросы в чате.</p>`;
+    box.dataset.pick = pick.map((p) => p.id).join(',');
+  }
+  function recommend() {
+    const n = ans.guests;
+    const pool = PRODUCTS.filter((p) => p.price);
+    const score = (p) => (p.family === ans.taste ? 3 : 0) + (ans.drink === 'sparkling' && p.line === 'cocktail' ? 2 : 0) + (ans.sober !== 'none' && p.uses.includes('lemonade') ? 2 : 0) + (p.img ? 0.5 : 0);
+    return pool.sort((a, b) => score(b) - score(a)).slice(0, n);
+  }
+  $('#quizBox').addEventListener('click', (e) => {
+    const t = e.target;
+    if (t.dataset.v !== undefined && step < Q.length) { const v = t.dataset.v; ans[Q[step].k] = isNaN(v) ? v : +v; step++; view(); }
+    else if (t.hasAttribute('data-back')) { step--; view(); }
+    else if (t.hasAttribute('data-again')) { step = 0; view(); }
+    else if (t.hasAttribute('data-cart')) { $('#quizBox').dataset.pick.split(',').forEach((id) => cart.add(id)); toast('Набор в корзине'); setTimeout(() => (location.href = 'korzina.html'), 700); }
+  });
+  view();
+});
+</script>
+</body>
+</html>

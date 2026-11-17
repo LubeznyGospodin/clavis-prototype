@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Корзина · CLAVIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero" style="padding-bottom:20px"><div class="wrap"><div class="crumbs"><a href="index.html">Главная</a> / Корзина</div><h1>Корзина</h1></div></section>
+  <section class="section" style="padding-top:0"><div class="wrap" id="cartBox"></div></section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const PROMOS = { CLAVIS5: 5 };
+  let promo = store.get('clavis_promo', '');
+  function render() {
+    const items = Object.entries(cart.all()).map(([id, q]) => ({ p: byId(PRODUCTS, id), q })).filter((x) => x.p);
+    if (!items.length) { $('#cartBox').innerHTML = `<div class="empty">Корзина пуста.<br><br><div class="btns" style="justify-content:center"><a class="btn" href="katalog.html">В каталог</a><a class="btn btn--ghost" href="dlya-doma.html">Подобрать набор</a></div></div>`; return; }
+    const sum = items.reduce((a, x) => a + x.p.price * x.q, 0);
+    const off = PROMOS[promo] ? Math.round(sum * PROMOS[promo] / 100) : 0;
+    $('#cartBox').innerHTML = `<div class="cart">
+      <div>
+        ${items.map(({ p, q }) => `<div class="cart-item"><div class="arch" style="--tint:${mix(p.color)}">${bottleEl(p)}</div>
+          <div><a href="tovar.html?id=${p.id}" class="serif" style="font-size:21px;text-decoration:none">${esc(p.name)}</a><div class="muted" style="font-size:14px">${esc(p.vol)} · ${rub(p.price)}</div></div>
+          <div class="qty"><button type="button" data-q="${p.id}" data-d="-1" aria-label="Меньше">−</button><span>${q}</span><button type="button" data-q="${p.id}" data-d="1" aria-label="Больше">+</button></div></div>`).join('')}
+        <form class="form card" id="order" style="margin-top:32px">
+          <h3>Доставка и контакты</h3>
+          <div class="row"><div class="field"><label for="o-name">Имя</label><input id="o-name" name="name" required autocomplete="name"></div><div class="field"><label for="o-phone">Телефон</label><input id="o-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
+          <div class="row"><div class="field"><label for="o-mail">E-mail для чека</label><input id="o-mail" name="email" type="email" required autocomplete="email"></div><div class="field"><label for="o-city">Город</label><input id="o-city" name="city" required autocomplete="address-level2"></div></div>
+          <label class="radio"><input type="radio" name="delivery" value="ozon" checked><span><b>Ozon Доставка</b><small>Пункт выдачи Ozon. Нужен аккаунт Ozon</small></span></label>
+          <label class="radio"><input type="radio" name="delivery" value="cdek"><span><b>СДЭК</b><small>Пункт выдачи или курьер</small></span></label>
+          <div class="field"><label for="o-addr">Адрес или пункт выдачи</label><input id="o-addr" name="address" required autocomplete="street-address"></div>
+          <label class="check"><input type="checkbox" name="consent" required> <span>Принимаю <a href="oferta.html">оферту</a> и соглашаюсь на обработку персональных данных по <a href="politika.html">политике</a></span></label>
+          <label class="check"><input type="checkbox" name="news"> <span>Хочу получать новости и рецепты</span></label>
+        </form>
+      </div>
+      <aside class="card summary">
+        <h3 style="margin-bottom:14px">Итого</h3>
+        <div class="line"><span>Товары</span><span>${rub(sum)}</span></div>
+        ${off ? `<div class="line"><span>Промокод ${esc(promo)}</span><span>−${rub(off)}</span></div>` : ''}
+        <div class="line"><span>Доставка</span><span class="muted">по тарифу службы</span></div>
+        <div class="line total"><span>К оплате</span><span>${rub(sum - off)}</span></div>
+        <form id="promoForm" class="row" style="display:flex;gap:8px;margin:16px 0"><input class="field" style="flex:1;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:12px" name="code" placeholder="Промокод" value="${esc(promo)}" aria-label="Промокод"><button class="btn btn--ghost btn--sm" type="submit">Применить</button></form>
+        <button class="btn btn--wine" type="submit" form="order" style="width:100%">Оплатить онлайн</button>
+        <p class="note" style="margin-top:12px">Чек по 54-ФЗ придёт на e-mail. Возврат по <a href="dostavka.html">условиям доставки и возврата</a>.</p>
+      </aside></div>`;
+  }
+  $('#cartBox').addEventListener('click', (e) => { const b = e.target.closest('[data-q]'); if (b) { cart.add(b.dataset.q, +b.dataset.d); render(); } });
+  $('#cartBox').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (e.target.id === 'promoForm') {
+      const code = e.target.code.value.trim().toUpperCase();
+      if (PROMOS[code]) { promo = code; store.set('clavis_promo', code); toast(`Скидка ${PROMOS[code]}% применена`); } else toast('Такого промокода нет');
+      render(); return;
+    }
+    if (!e.target.reportValidity()) return;
+    const d = Object.fromEntries(new FormData(e.target));
+    const orders = store.get('clavis_orders', []); orders.push({ ...d, items: cart.all(), promo, at: new Date().toISOString() }); store.set('clavis_orders', orders);
+    try { sessionStorage.setItem('clavis_last', JSON.stringify({ kind: 'order', subject: `[Заказ] ${d.city}` })); } catch {}
+    cart.clear(); store.set('clavis_promo', '');
+    location.href = 'spasibo.html';
+  });
+  render();
+});
+</script>
+</body>
+</html>

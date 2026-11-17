@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Контакты · CLAVIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap lead-box">
+      <div>
+        <div class="crumbs"><a href="index.html">Главная</a> / Контакты</div>
+        <h1>Контакты</h1>
+        <ul class="list-clean" style="margin-top:28px">
+          <li><div class="eyebrow" style="margin:0">Телефон</div><a class="serif" style="font-size:30px;text-decoration:none" id="tel"></a></li>
+          <li><div class="eyebrow" style="margin:0">Почта</div><a class="serif" style="font-size:30px;text-decoration:none" id="mail"></a></li>
+          <li><div class="eyebrow" style="margin:0">Соцсети</div><span>@clavis_liquid</span></li>
+          <li><div class="eyebrow" style="margin:0">Производство</div><span>Московская область</span></li>
+        </ul>
+        <p class="note" style="margin-top:14px">Реквизиты продавца появятся здесь после выбора юрлица для магазина.</p>
+      </div>
+      <form class="form card" data-lead="general">
+        <h3>Напишите нам</h3>
+        <div class="field"><label for="k-dir">Направление</label><select id="k-dir" name="direction"><option value="venue">Заведение</option><option value="distributor">Дистрибьютор</option><option value="contract">Контрактное производство</option><option value="home">Покупаю домой</option><option value="general">Другой вопрос</option></select></div>
+        <div class="row"><div class="field"><label for="k-name">Имя</label><input id="k-name" name="name" required autocomplete="name"></div><div class="field"><label for="k-phone">Телефон</label><input id="k-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
+        <div class="field"><label for="k-city">Город</label><input id="k-city" name="city" required></div>
+        <div class="field"><label for="k-msg">Сообщение</label><textarea id="k-msg" name="message"></textarea></div>
+        <div data-consent></div>
+        <button class="btn btn--wine" type="submit">Отправить</button>
+      </form>
+    </div>
+  </section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  $('#tel').textContent = CONTACTS.phone; $('#tel').href = 'tel:' + CONTACTS.phoneHref;
+  $('#mail').textContent = CONTACTS.email; $('#mail').href = 'mailto:' + CONTACTS.email;
+  $('[data-consent]').innerHTML = consentField('kk-consent');
+  if (param('topic') === 'price') { $('#k-dir').value = 'venue'; $('#k-msg').value = 'Пришлите, пожалуйста, оптовый прайс.'; }
+});
+</script>
+</body>
+</html>

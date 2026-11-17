@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Контрактное производство · CLAVIS</title>
+<meta name="description" content="Сварим ваш вкус партией от 500 литров. 30 дней от утверждённой рецептуры до отгрузки, собственная площадка в Подмосковье.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Главная</a> / <a href="dlya-biznesa.html">Для бизнеса</a> / Контрактное производство</div>
+      <div class="split" style="align-items:end;margin-bottom:36px">
+        <div><div class="eyebrow">Своя рецептура</div><h1>Сварим ваш вкус</h1></div>
+        <div><p class="lead">Разработаем рецептуру, оформим документы и разольём партию на собственной площадке. Вы получаете готовый продукт под своим брендом.</p><a class="btn btn--wine" href="#form">Рассчитать партию</a></div>
+      </div>
+      <div class="video">
+        <img src="img/production.webp" alt="Цех CLAVIS">
+        <div class="video__play"><div><i>▶</i>Видео о производстве CLAVIS скоро будет здесь</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><b>500 л</b><span>минимальная партия одной рецептуры</span></div>
+        <div class="stat"><b>30 дней</b><span>от утверждённой рецептуры до отгрузки</span></div>
+        <div class="stat"><b>от 100 000 ₽</b><span>разработка рецептуры за SKU</span></div>
+        <div class="stat"><b>ХАССП</b><span>контроль на каждом этапе</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="split__media"><img src="img/bottle-glass.webp" alt="Бутылка CLAVIS и лимонад" loading="lazy"></div>
+      <div>
+        <div class="eyebrow">Что берём на себя</div>
+        <h2 style="margin-bottom:22px">От идеи до партии на вашем складе</h2>
+        <ul class="list-clean">
+          <li><b>Рецептура</b><br><span class="muted">Технологи собирают вкус под вашу задачу и присылают образцы</span></li>
+          <li><b>ТУ и декларации</b><br><span class="muted">Оформляем документы для продажи в России и ЕАЭС</span></li>
+          <li><b>Этикетка</b><br><span class="muted">Готовим состав и обязательные надписи</span></li>
+          <li><b>Розлив и отгрузка</b><br><span class="muted">Собственная площадка в Подмосковье, контроль от фрукта до экстракции</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--night">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Этапы</div><h2>Как идёт работа</h2></div></div>
+      <div class="steps steps--5">
+        <div class="step"><h3>Заявка</h3><p>Вы описываете продукт и объём.</p></div>
+        <div class="step"><h3>Бриф</h3><p>Технолог уточняет вкус, состав и упаковку.</p></div>
+        <div class="step"><h3>Образцы</h3><p>Присылаем образцы на утверждение.</p></div>
+        <div class="step"><h3>Договор</h3><p>Фиксируем рецептуру, цену и срок.</p></div>
+        <div class="step"><h3>Партия</h3><p>Варим, разливаем и отгружаем.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="form">
+    <div class="wrap lead-box">
+      <div><div class="eyebrow">Заявка</div><h2 style="margin-bottom:16px">Рассчитаем вашу партию</h2><p class="lead">Технолог свяжется с вами, задаст вопросы по продукту и назовёт стоимость.</p></div>
+      <form class="form card" data-lead="contract">
+        <div class="row"><div class="field"><label for="k-company">Компания</label><input id="k-company" name="company" required autocomplete="organization"></div><div class="field"><label for="k-type">Тип продукта</label><select id="k-type" name="product"><option>Кордиал</option><option>Сироп</option><option>Концентрат</option><option>Другое</option></select></div></div>
+        <div class="row"><div class="field"><label for="k-vol">Объём партии, л</label><input id="k-vol" name="volume" type="number" min="500" step="50" placeholder="от 500"></div><div class="field"><label for="k-term">Когда нужна партия</label><input id="k-term" name="term" placeholder="Например, к марту"></div></div>
+        <div class="row"><div class="field"><label for="k-name">Имя</label><input id="k-name" name="name" required autocomplete="name"></div><div class="field"><label for="k-phone">Телефон</label><input id="k-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
+        <div data-consent></div>
+        <button class="btn btn--wine" type="submit">Рассчитать партию</button>
+      </form>
+    </div>
+  </section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { $('[data-consent]').innerHTML = consentField('k-consent'); });</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Товар · CLAVIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero"><div class="wrap" id="pdp"></div></section>
+  <section class="section section--paper" id="recipesBox"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Рецепты</div><h2>Что приготовить с этим вкусом</h2></div><a class="link" href="recepty.html">Все рецепты</a></div><div class="grid grid--3" id="recipes"></div></div></section>
+  <section class="section"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Похожие вкусы</div><h2>Из той же семьи</h2></div><a class="link" href="katalog.html">Весь каталог</a></div><div class="products" id="similar"></div></div></section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const p = byId(PRODUCTS, param('id'));
+  if (!p) { location.replace('404.html'); return; }
+  document.title = `${p.name} · CLAVIS`;
+  const typeName = { cordial: 'Кордиал', concentrate: 'Концентрат', juice: 'Сок прямого отжима', tonic: 'Основа для тоника', cocktail: 'Коктейльная основа' }[p.type];
+  const portions = p.type === 'cordial' || p.type === 'cocktail' ? '25' : p.type === 'tonic' ? '9 л' : '15–40';
+  const inSet = () => tasting.all().includes(p.id);
+  $('#pdp').innerHTML = `
+    <div class="crumbs"><a href="index.html">Главная</a> / <a href="katalog.html">Каталог</a> / <a href="katalog.html?line=${p.line}">${esc(lineName(p.line))}</a></div>
+    <div class="pdp">
+      <div class="pdp__visual">${archFor(p)}</div>
+      <div>
+        <div class="eyebrow">${esc(typeName)} · ${esc(lineName(p.line))}</div>
+        <h1>${esc(p.name)}</h1>
+        <p class="lead">${esc(p.profile)}. ${esc(family(p.family).name)}, ${esc(p.vol)}.</p>
+        <div class="uses-icons">${p.uses.map((u) => `<span>${USES[u]}</span>`).join('')}</div>
+        <div class="facts">
+          <div><b>${p.brix}</b><span>Brix, сладость</span></div>
+          <div><b>${p.ph}</b><span>pH, кислотность</span></div>
+          <div><b>${portions}</b><span>${p.type === 'tonic' ? 'тоника из 1 л' : 'порций в бутылке'}</span></div>
+          <div><b>30 мл</b><span>закладка в хайбол</span></div>
+        </div>
+        <div class="buy">
+          <div class="card"><h4>Для бизнеса</h4><p class="muted" style="margin:0">Оптовая цена по запросу</p>
+            <a class="btn btn--ghost" href="kontakty.html?topic=price">Запросить прайс</a>
+            <button class="btn" type="button" id="setBtn"></button></div>
+          <div class="card"><h4>Для дома</h4>${p.price ? `<div class="price"><b>${rub(p.price)}</b>${portions === '25' ? `<span class="muted">${Math.round(p.price / 25)} ₽ за порцию</span>` : ''}</div><button class="btn btn--wine" type="button" id="cartBtn">В корзину</button>` : '<p class="muted" style="margin:0">Позиция для профессионалов, продаём оптом</p>'}</div>
+        </div>
+        <details class="faq" style="margin-top:26px"><summary>Состав и хранение</summary><p>Состав и условия хранения CLAVIS заполнит в карточке товара через админку. Продукция не содержит алкоголя.</p></details>
+      </div>
+    </div>`;
+  const setBtn = $('#setBtn');
+  const paint = () => { setBtn.textContent = inSet() ? 'В дегустационном сете ✓' : 'Добавить в дегустацию'; };
+  paint(); setBtn.onclick = () => { if (tasting.toggle(p.id) !== false) { paint(); toast(inSet() ? 'Вкус в дегустационном сете' : 'Убрали из сета'); } };
+  $('#cartBtn')?.addEventListener('click', () => { cart.add(p.id); toast('Добавили в корзину'); });
+  const rec = RECIPES.filter((r) => r.product === p.id);
+  if (rec.length) $('#recipes').innerHTML = rec.map(recipeCard).join(''); else $('#recipesBox').remove();
+  $('#similar').innerHTML = PRODUCTS.filter((x) => x.family === p.family && x.id !== p.id).slice(0, 4).map(productCard).join('');
+});
+</script>
+</body>
+</html>

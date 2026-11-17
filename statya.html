@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Статья · CLAVIS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <article class="page-hero"><div class="wrap" id="box"></div></article>
+  <section class="section section--paper"><div class="wrap"><div class="section-head"><div><div class="eyebrow">Из статьи</div><h2>Продукты и рецепты</h2></div></div><div class="grid grid--3" id="more"></div></div></section>
+  <section class="section section--night"><div class="wrap lead-box">
+    <div><div class="eyebrow">Заявка</div><h2>Хотите так же у себя?</h2></div>
+    <form class="form" data-lead="general">
+      <div class="field"><label for="a-dir">Направление</label><select id="a-dir" name="direction"><option value="venue">Заведение</option><option value="distributor">Дистрибьютор</option><option value="home">Покупаю домой</option></select></div>
+      <div class="row"><div class="field"><label for="a-name">Имя</label><input id="a-name" name="name" required autocomplete="name"></div><div class="field"><label for="a-phone">Телефон</label><input id="a-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
+      <div class="field"><label for="a-city">Город</label><input id="a-city" name="city" required></div>
+      <div data-consent></div><button class="btn btn--light" type="submit">Отправить</button>
+    </form>
+  </div></section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const a = byId(ARTICLES, param('id'));
+  if (!a) { location.replace('404.html'); return; }
+  document.title = `${a.title} · CLAVIS`;
+  $('#box').innerHTML = `<div class="crumbs"><a href="index.html">Главная</a> / <a href="zhurnal.html">Журнал</a></div>
+    <div class="eyebrow">${esc(a.tag)}</div><h1 style="max-width:900px;margin-bottom:18px">${esc(a.title)}</h1><p class="lead">${esc(a.lead)}</p>
+    <img src="${a.img}" alt="" style="width:100%;max-height:520px;object-fit:cover;border-radius:var(--radius);margin:36px 0">
+    <div class="prose">${a.body.map((p) => `<p>${esc(p)}</p>`).join('')}</div>`;
+  const recs = { 'sebestoimost-porcii': ['yudzu-highball', 'rose-sour', 'vishnya-highball'], 'odna-butylka-na-prazdnik': ['oblepiha-lemonade', 'klyukva-tonic', 'wildberry-spritz-r'], novinki: ['oblepiha-lemonade', 'klyukva-tonic', 'masala-tea'] }[a.id];
+  $('#more').innerHTML = recs.map((id) => recipeCard(byId(RECIPES, id))).join('');
+  $('[data-consent]').innerHTML = consentField('a-consent');
+});
+</script>
+</body>
+</html>

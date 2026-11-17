@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Дистрибьюторам · CLAVIS</title>
+<meta name="description" content="Станьте партнёром CLAVIS в вашем регионе: растущая категория основ для напитков, поддержка бренда, бонусы за развитие территории.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero">
+    <div class="wrap split">
+      <div>
+        <div class="crumbs"><a href="index.html">Главная</a> / <a href="dlya-biznesa.html">Для бизнеса</a> / Дистрибьюторам</div>
+        <div class="eyebrow">Оптовым партнёрам</div>
+        <h1>Растите вместе с категорией</h1>
+        <p class="lead">CLAVIS первым в России начал варить основы для коктейлей. Мы ищем партнёров в регионах, где бары и сети уже спрашивают про кордиалы.</p>
+        <div class="btns" style="margin-top:24px"><a class="btn btn--wine" href="#form">Обсудить регион</a></div>
+      </div>
+      <div class="split__media"><img src="img/lineup.webp" alt="Бутылки CLAVIS в ряд" style="aspect-ratio:auto"></div>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Почему бренд продаётся</div><h2>Покупатели уже знают CLAVIS</h2></div></div>
+      <div class="stats" id="stats"></div>
+      <div class="partners" id="partners"></div>
+      <p class="muted" style="margin-top:20px">Аккаунты CLAVIS в соцсетях собирают больше 5 млн охвата в месяц.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid--2" style="align-items:start">
+      <div>
+        <div class="eyebrow">Условия</div>
+        <h2 style="margin-bottom:18px">Понятная экономика с первой поставки</h2>
+        <p class="lead">Вы получаете маржу с каждой бутылки, бонусы за развитие территории и отсрочку платежа. Цифры по вашему региону менеджер назовёт на звонке и пришлёт презентацию с прайсом.</p>
+      </div>
+      <ul class="list-clean">
+        <li><b>Маржа с бутылки</b><br><span class="muted">Базовая ставка и рост за объём</span></li>
+        <li><b>Бонусы за территорию</b><br><span class="muted">Новые точки и сети в регионе</span></li>
+        <li><b>Отсрочка платежа</b><br><span class="muted">Со второй поставки</span></li>
+        <li><b>Поддержка партнёра</b><br><span class="muted">Дегустации, обучение команды, маркетинговые материалы, совместные мероприятия</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Портфель</div><h2>Шесть линеек CLAVIS и FRUITOPIA</h2></div><a class="link" href="katalog.html">Весь каталог</a></div>
+      <div class="lines" id="lines"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div><div class="eyebrow">География</div><h2 style="margin-bottom:16px">31 регион России и три страны рядом</h2><p class="lead">CLAVIS уже продают в 31 регионе России, а ещё в Азербайджане, Армении и Казахстане. Свободные регионы менеджер покажет на звонке.</p></div>
+      <div class="card"><div class="stat"><b>31</b><span>регион России</span></div><div class="stat" style="margin-top:20px"><b>3</b><span>страны: Азербайджан, Армения, Казахстан</span></div></div>
+    </div>
+  </section>
+
+  <section class="section section--night" id="form">
+    <div class="wrap lead-box">
+      <div><div class="eyebrow">Заявка</div><h2 style="margin-bottom:16px">Обсудим ваш регион</h2><p class="lead">Менеджер перезвонит, оценит потенциал региона и пришлёт презентацию с прайсом.</p></div>
+      <form class="form" data-lead="distributor">
+        <div class="row"><div class="field"><label for="d-company">Компания</label><input id="d-company" name="company" required autocomplete="organization"></div><div class="field"><label for="d-region">Регион</label><input id="d-region" name="region" required></div></div>
+        <div class="field"><label for="d-channels">Каналы продаж</label><select id="d-channels" name="channels"><option>HoReCa</option><option>Розничные сети</option><option>HoReCa и розница</option><option>Онлайн</option></select></div>
+        <div class="row"><div class="field"><label for="d-name">Имя</label><input id="d-name" name="name" required autocomplete="name"></div><div class="field"><label for="d-phone">Телефон</label><input id="d-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
+        <div data-consent></div>
+        <button class="btn btn--light" type="submit">Обсудить регион</button>
+      </form>
+    </div>
+  </section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  $('[data-consent]').innerHTML = consentField('d-consent');
+  $('#stats').innerHTML = STATS.map((s) => `<div class="stat"><b>${s.n}</b><span>${s.t}</span></div>`).join('');
+  $('#partners').innerHTML = PARTNERS.map((p) => `<span>${p}</span>`).join('');
+  $('#lines').innerHTML = lineCards();
+});
+</script>
+</body>
+</html>

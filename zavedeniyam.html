@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Заведениям · CLAVIS</title>
+<meta name="description" content="Бесплатно проработаем меню вашего бара с ведущими миксологами страны. Напиток за минуту, порция дешевле на 30–50%.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body class="has-sticky">
+<div data-header></div>
+<main id="main">
+  <section class="page-hero" id="form">
+    <div class="wrap lead-box">
+      <div>
+        <div class="crumbs"><a href="index.html">Главная</a> / <a href="dlya-biznesa.html">Для бизнеса</a> / Заведениям</div>
+        <div class="eyebrow">Бары, рестораны, кофейни</div>
+        <h1>Бесплатно проработаем меню вашего заведения с ведущими миксологами страны</h1>
+        <p class="lead">Миксолог CLAVIS приедет на дегустацию, соберёт авторские напитки под концепцию заведения и научит команду готовить их за минуту.</p>
+      </div>
+      <form class="form card" data-lead="venue" data-with-set>
+        <h3>Заказать дегустацию</h3>
+        <div class="row"><div class="field"><label for="v-venue">Заведение</label><input id="v-venue" name="venue" required></div><div class="field"><label for="v-city">Город</label><input id="v-city" name="city" required autocomplete="address-level2"></div></div>
+        <div class="field"><label for="v-type">Формат</label><select id="v-type" name="type"><option>Бар</option><option>Ресторан</option><option>Кофейня</option><option>Ивент</option></select></div>
+        <div class="row"><div class="field"><label for="v-name">Имя</label><input id="v-name" name="name" required autocomplete="name"></div><div class="field"><label for="v-phone">Телефон</label><input id="v-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
+        <div class="field"><label>Вкусы в дегустационном сете</label><div id="setList" class="tags"></div></div>
+        <div data-consent></div>
+        <button class="btn btn--wine" type="submit">Заказать дегустацию</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section section--paper">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Экономика</div><h2>Напиток за минуту, порция дешевле</h2></div></div>
+      <div class="stats" style="margin-bottom:56px">
+        <div class="stat"><b>1 мин</b><span>на приготовление напитка</span></div>
+        <div class="stat"><b>−30–50%</b><span>себестоимость порции</span></div>
+        <div class="stat"><b>+31%</b><span>средний чек по напиткам</span></div>
+        <div class="stat"><b>15–40</b><span>порций из бутылки</span></div>
+      </div>
+      <div class="calc card">
+        <div>
+          <h3 style="margin-bottom:8px">Посчитайте свою порцию</h3>
+          <p class="muted">Двигайте ползунок закладки, сайт пересчитает выход и себестоимость.</p>
+          <div class="field" style="margin-top:20px"><label for="dose">Закладка основы: <b id="doseV">30</b> мл</label><input id="dose" type="range" min="15" max="60" step="5" value="30"></div>
+          <div class="field" style="margin-top:14px"><label for="bprice">Цена бутылки 0,75 л, ₽</label><input id="bprice" type="number" min="100" step="10" value="800"></div>
+        </div>
+        <div>
+          <div class="calc__out"><div><b id="outN">25</b><span>порций из бутылки</span></div><div><b id="outC">32 ₽</b><span>основа в одной порции</span></div></div>
+          <a class="btn btn--ghost" href="#form" style="margin-top:16px;width:100%">Получить расчёт по вашей карте</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Как начать</div><h2>Четыре шага до новой карты</h2></div></div>
+      <div class="steps">
+        <div class="step"><h3>Дегустация</h3><p>Привозим сет вкусов и пробуем их с командой.</p></div>
+        <div class="step"><h3>Меню от миксолога</h3><p>Амбассадор CLAVIS собирает напитки под концепцию заведения.</p></div>
+        <div class="step"><h3>Первый сет</h3><p>Вы заказываете выбранные основы и запускаете карту.</p></div>
+        <div class="step"><h3>Бонусы</h3><p>Платим за контент с CLAVIS и проводим совместные мероприятия.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--night">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">С нами работают</div><h2>Партнёры и результаты</h2></div></div>
+      <div class="partners" style="border-color:#332a26;margin-top:0;color:#cfc5b8" id="partners"></div>
+      <div class="grid grid--2" style="margin-top:48px">
+        <div class="card" style="background:var(--night-2);border-color:#332a26"><b class="serif" style="font-size:56px;color:var(--gold)">+31%</b><p class="muted">Средний чек по напиткам после запуска авторских коктейлей от амбассадора CLAVIS. Данные опроса службы контроля качества CLAVIS, 2023.</p></div>
+        <div class="card" style="background:var(--night-2);border-color:#332a26"><b class="serif" style="font-size:56px;color:var(--gold)">+39%</b><p class="muted">Прирост маржинальности коктейльной карты. Исследование CLAVIS R&amp;D, 2025.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div><div class="eyebrow">Вопросы</div><h2>Частые вопросы</h2></div>
+      <div class="faq">
+        <details><summary>Сколько порций выходит из бутылки?</summary><p>При закладке 30 мл из бутылки 0,75 л выходит 25 порций. Сауэр берёт 45 мл, тогда порций 16. Точный выход покажет калькулятор выше.</p></details>
+        <details><summary>Есть ли в основах алкоголь?</summary><p>Нет. Все позиции CLAVIS 0% ABV. Крепкий алкоголь бармен добавляет сам, если напиток его требует.</p></details>
+        <details><summary>Платная ли дегустация?</summary><p>Проработку меню с миксологом делаем бесплатно. Пробный набор за 2 000 ₽ мы засчитываем в первый заказ.</p></details>
+        <details><summary>Как быстро ответит менеджер?</summary><p>В течение рабочего дня. Заявка сразу попадает к менеджеру, который ведёт заведения в вашем городе.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="sticky-cta"><a class="btn btn--wine" href="#form">Заказать дегустацию</a></div>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  $('[data-consent]').innerHTML = consentField('v-consent');
+  $('#partners').innerHTML = PARTNERS.map((p) => `<span>${p}</span>`).join('');
+  const s = tasting.all();
+  $('#setList').innerHTML = s.length ? s.map((id) => `<span class="tag">${esc(byId(PRODUCTS, id).name)}</span>`).join('') : '<span class="muted" style="font-size:14px">Сет пока пуст. Добавьте вкусы кнопкой «Добавить в дегустацию» в <a href="katalog.html">каталоге</a> или оставьте выбор миксологу.</span>';
+  const calc = () => {
+    const dose = +$('#dose').value, price = +$('#bprice').value || 0, n = Math.floor(750 / dose);
+    $('#doseV').textContent = dose; $('#outN').textContent = n; $('#outC').textContent = rub(Math.round(price / n));
+  };
+  $('#dose').addEventListener('input', calc); $('#bprice').addEventListener('input', calc); calc();
+});
+</script>
+</body>
+</html>

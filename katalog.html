@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Каталог · CLAVIS</title>
+<meta name="description" content="Кордиалы, концентраты, коктейльная серия и новинки CLAVIS. Фильтры по линейке, вкусу и применению.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div data-header></div>
+<main id="main">
+  <section class="page-hero" style="padding-bottom:28px">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Главная</a> / Каталог</div>
+      <h1>Каталог</h1>
+    </div>
+  </section>
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <a class="new-head" href="katalog.html?line=new" data-line-link="new"><b>Новинки</b><span>11 позиций: северные ягоды, хвоя, свежие соки →</span></a>
+      <div class="explain"><span><b>Кордиал, концентрат или сироп?</b> Кордиал уже содержит кислоту и пряность, концентрат даёт плотный вкус для лимонадов и чая, сироп добавляет только сладость.</span><a class="link" href="kordial-koncentrat-sirop.html">Сравнить подробно</a></div>
+      <div class="filters" id="filters"></div>
+      <div class="products" id="grid"></div>
+    </div>
+  </section>
+</main>
+<div data-footer></div>
+<script src="js/data.js"></script>
+<script src="js/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const st = { line: param('line') || '', family: param('family') || '', use: param('use') || '' };
+  const row = (key, label, items) => `<div class="filter-row"><span>${label}</span><button class="chip${st[key] ? '' : ' is-on'}" data-k="${key}" data-v="">Все</button>${items.map(([v, t]) => `<button class="chip${st[key] === v ? ' is-on' : ''}" data-k="${key}" data-v="${v}">${t}</button>`).join('')}</div>`;
+  function render() {
+    $('#filters').innerHTML = row('line', 'Линейка', LINES.map((l) => [l.id, l.name])) + row('family', 'Вкусовая семья', FAMILIES.map((f) => [f.id, f.name])) + row('use', 'Применение', Object.entries(USES));
+    const list = PRODUCTS.filter((p) => (!st.line || p.line === st.line) && (!st.family || p.family === st.family) && (!st.use || p.uses.includes(st.use)));
+    const extraLine = st.line === 'fruitopia' || st.line === 'perfume';
+    $('#grid').innerHTML = list.length ? list.map(productCard).join('') : `<div class="empty" style="grid-column:1/-1">${extraLine ? `Позиции линейки ${esc(lineName(st.line))} менеджер пришлёт вместе с прайсом.<br><br><a class="btn btn--wine" href="kontakty.html">Запросить состав линейки</a>` : 'Под эти фильтры ничего не нашлось. Попробуйте убрать один из них.'}</div>`;
+    const q = new URLSearchParams(Object.entries(st).filter(([, v]) => v)).toString();
+    history.replaceState(null, '', q ? '?' + q : location.pathname);
+  }
+  $('#filters').addEventListener('click', (e) => { const c = e.target.closest('.chip'); if (!c) return; st[c.dataset.k] = c.dataset.v; render(); });
+  $('[data-line-link]').addEventListener('click', (e) => { e.preventDefault(); st.line = 'new'; st.family = st.use = ''; render(); $('#filters').scrollIntoView({ behavior: 'smooth' }); });
+  render();
+});
+</script>
+</body>
+</html>
