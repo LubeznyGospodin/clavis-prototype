@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const p = byId(PRODUCTS, param('id'));
   if (!p) { location.replace('404.html'); return; }
   document.title = `${p.name} · CLAVIS`;
-  const typeName = { cordial: 'Кордиал', concentrate: 'Концентрат', juice: 'Сок прямого отжима', tonic: 'Основа для тоника', cocktail: 'Коктейльная основа' }[p.type];
+  const typeName = { cordial: 'Кордиал', concentrate: 'Концентрат', juice: 'Сок прямого отжима', tonic: 'Основа для тоника', cocktail: 'Коктейльная основа', syrup: 'Сироп' }[p.type];
   const portions = p.type === 'cordial' || p.type === 'cocktail' ? '25' : p.type === 'tonic' ? '9 л' : '15–40';
   const inSet = () => tasting.all().includes(p.id);
   $('#pdp').innerHTML = `
@@ -36,12 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <h1>${esc(p.name)}</h1>
         <p class="lead">${esc(p.profile)}. ${esc(family(p.family).name)}, ${esc(p.vol)}.</p>
         <div class="uses-icons">${p.uses.map((u) => `<span>${USES[u]}</span>`).join('')}</div>
-        <div class="facts">
+        ${p.brix ? `<div class="facts">
           <div><b>${p.brix}</b><span>Brix, сладость</span></div>
           <div><b>${p.ph}</b><span>pH, кислотность</span></div>
           <div><b>${portions}</b><span>${p.type === 'tonic' ? 'тоника из 1 л' : 'порций в бутылке'}</span></div>
           <div><b>30 мл</b><span>закладка в хайбол</span></div>
-        </div>
+        </div>` : `<div class="facts"><div><b>${esc(p.vol)}</b><span>объём бутылки</span></div><div><b>${esc(typeName)}</b><span>тип</span></div></div>`}
         <div class="buy">
           <div class="card"><h4>Для бизнеса</h4><p class="muted" style="margin:0">Оптовая цена по запросу</p>
             <a class="btn btn--ghost" href="kontakty.html?topic=price">Запросить прайс</a>

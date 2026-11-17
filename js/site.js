@@ -95,9 +95,9 @@ function productCard(p) {
 
 // Шесть линеек рядом, у каждой своя бутылка в арке. Число позиций по колоде 2026.
 function lineCards() {
-  const counts = { new: 11, cordial: 20, concentrate: 5, cocktail: 4, fruitopia: 4, perfume: 11 };
+  const counts = { new: 11, cordial: 20, concentrate: 5, cocktail: 4, fruitopia: 9, perfume: 11 };
   const face = { new: byId(PRODUCTS, 'klyukva-citrus-rozmarin'), cordial: byId(PRODUCTS, 'yudzu-bambuk-lemongrass'), concentrate: byId(PRODUCTS, 'feyhoa-klubnika-myata'), cocktail: byId(PRODUCTS, 'wildberry-spritz'),
-    fruitopia: { id: 'fruitopia', name: 'FRUITOPIA', family: 'fruit', color: '#f0a03c', vol: '1 л' }, perfume: { id: 'perfume', name: 'Парфюм для напитков', family: 'flower', color: '#3b2a2a', vol: '30 мл' } };
+    fruitopia: byId(PRODUCTS, 'fruitopia-yudzu'), perfume: { id: 'perfume', name: 'Парфюм для напитков', family: 'flower', color: '#3b2a2a', vol: '30 мл' } };
   return LINES.map((l) => `<a class="line-card" href="katalog.html?line=${l.id}">${archFor(face[l.id])}<b>${l.name}</b><span>${counts[l.id]} поз. · ${l.note}</span></a>`).join('');
 }
 
