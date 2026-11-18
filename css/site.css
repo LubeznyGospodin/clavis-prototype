@@ -130,7 +130,9 @@ p { margin: 0 0 1em; }
 
 /* Цифры */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-.stat b { display: block; font: 500 clamp(40px, 5vw, 64px)/1 var(--serif); color: var(--wine); margin-bottom: 8px; }
+.stat { border-top: 1px solid var(--line); padding-top: 18px; }
+.stat b { display: block; font: 500 clamp(40px, 4.6vw, 60px)/1 var(--serif); font-variant-numeric: lining-nums; font-feature-settings: "lnum"; color: var(--wine); margin-bottom: 10px; white-space: nowrap; }
+.section--tight { padding: clamp(48px, 6vw, 80px) 0; }
 .stat span { color: var(--muted); font-size: 15px; }
 .partners { margin-top: 44px; }
 .logo-wall { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(8, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
