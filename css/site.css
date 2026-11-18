@@ -401,3 +401,6 @@ p { margin: 0 0 1em; }
 @media (max-width: 980px) { .fbar__params { grid-template-columns: 1fr; } }
 @media (max-width: 640px) { .fbar__count { margin-left: 0; } }
 .pbadge { position: absolute; top: 10px; left: 0; z-index: 3; padding: 4px 10px; border-radius: 999px; background: var(--wine); color: #fff; font-size: 12px; font-weight: 600; }
+.shop-item { display: flex; flex-direction: column; }
+.shop-item .product { flex: 1; }
+.shop-item .btn { margin-top: 14px; width: 100%; }

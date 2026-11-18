@@ -8,7 +8,7 @@
 <meta name="description" content="Кордиалы, концентраты, коктейльная серия, FRUITOPIA и новинки CLAVIS. Поиск по вкусу, фильтры по применению, типу и сладости.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=9">
+<link rel="stylesheet" href="css/site.css?v=10">
 </head>
 <body>
 <div data-header></div>
@@ -41,15 +41,15 @@
   </section>
 </main>
 <div data-footer></div>
-<script src="js/data.js?v=9"></script>
-<script src="js/site.js?v=9"></script>
+<script src="js/data.js?v=10"></script>
+<script src="js/site.js?v=10"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const TYPES = { cordial: 'Кордиал', concentrate: 'Концентрат', syrup: 'Сироп', cocktail: 'Коктейльная основа', juice: 'Сок', tonic: 'Тоник' };
   const SWEET = { light: ['Лёгкая', 0, 35], mid: ['Средняя', 35, 45], dense: ['Плотная', 45, 99] };
   const brix = (p) => parseFloat(String(p.brix).replace(',', '.'));
   const counts = Object.fromEntries(LINES.map((l) => [l.id, PRODUCTS.filter((p) => p.line === l.id).length]));
-  const st = { line: param('line') || '', use: param('use') || '', family: param('family') || '', type: '', sweet: '', home: false, q: '' };
+  const st = { line: param('line') || '', use: param('use') || '', family: param('family') || '', type: '', sweet: '', home: param('home') === '1', q: '' };
 
   // Плитки линеек сверху, как сегменты в базе моделей
   function seg() {
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = $('#params'), open = p.hidden; p.hidden = !open;
     $('#toggle').setAttribute('aria-expanded', open); $('#toggle').textContent = (open ? '⌄' : '›') + ' Параметры: вкус, тип, сладость';
   });
-  if (st.family) $('#toggle').click();
+  if (st.family || st.home) $('#toggle').click();
   render();
 });
 </script>

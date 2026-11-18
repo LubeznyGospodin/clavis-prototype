@@ -8,44 +8,37 @@
 <meta name="description" content="Лимонады детям и коктейли взрослым из одной бутылки. Подберите набор CLAVIS под ваш праздник за 20 секунд.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=9">
+<link rel="stylesheet" href="css/site.css?v=10">
 </head>
 <body>
 <div data-header></div>
 <main id="main">
-  <section class="page-hero" style="padding-bottom:28px">
-    <div class="wrap">
-      <div class="crumbs"><a href="index.html">Главная</a> / Для дома</div>
-      <div class="eyebrow">Топ-рецепты для дома</div>
-      <h1>Напиток к празднику за две минуты</h1>
-      <p class="lead">Основа, лёд и содовая. Шейкер не нужен. Одной бутылки хватит на 25 стаканов.</p>
+  <section class="page-hero" style="padding-bottom:24px">
+    <div class="wrap split" style="align-items:end">
+      <div>
+        <div class="crumbs"><a href="index.html">Главная</a> / Для дома</div>
+        <div class="eyebrow">Магазин CLAVIS</div>
+        <h1 style="margin:0">Для дома</h1>
+      </div>
+      <div>
+        <p class="lead">Одна бутылка, лёд и содовая. Шейкер не нужен, бутылки хватит на 25 стаканов. Доставляем Ozon и СДЭК.</p>
+        <div class="btns"><a class="btn btn--wine" href="#quiz">Подобрать набор</a><a class="btn btn--ghost" href="recepty.html?where=home">Рецепты для дома</a></div>
+      </div>
     </div>
   </section>
-  <section class="section" style="padding-top:0"><div class="wrap grid grid--4" id="top"></div></section>
+
+  <section class="section" style="padding-top:0">
+    <div class="wrap">
+      <div class="fbar" style="margin-bottom:28px"><div class="fbar__row"><div class="fbar__chips" id="shopChips"></div><span class="fbar__count" id="shopCount"></span></div></div>
+      <div class="products" id="shop"></div>
+      <p style="margin-top:34px"><a class="link" href="katalog.html?home=1">Все вкусы, которые можно купить домой</a></p>
+    </div>
+  </section>
 
   <section class="section section--paper" id="quiz">
     <div class="wrap">
       <div class="section-head"><div><div class="eyebrow">Подбор набора</div><h2>Четыре вопроса, и набор в корзине</h2></div></div>
       <div class="quiz" id="quizBox"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">Вкусы для дома</div><h2>Коктейльная серия и любимые вкусы</h2></div><a class="link" href="katalog.html">Весь каталог</a></div>
-      <div class="products" id="home"></div>
-    </div>
-  </section>
-
-  <section class="section section--paper">
-    <div class="wrap split">
-      <div class="split__media"><img src="img/format-lemonade.webp" alt="Лимонад с основой CLAVIS" loading="lazy"></div>
-      <div>
-        <div class="eyebrow">Одна бутылка на всю семью</div>
-        <h2 style="margin-bottom:18px">Лимонад детям, хайбол взрослым</h2>
-        <p class="lead">Детям наливаем 30 мл основы и 150 мл содовой. Взрослым добавляем 40 мл крепкого. Вкус один, напитки разные.</p>
-        <a class="btn" href="recepty.html?kind=lemonade" style="margin-top:12px">Рецепты лимонадов</a>
-      </div>
     </div>
   </section>
 
@@ -58,13 +51,26 @@
   </section>
 </main>
 <div data-footer></div>
-<script src="js/data.js?v=9"></script>
-<script src="js/site.js?v=9"></script>
+<script src="js/data.js?v=10"></script>
+<script src="js/site.js?v=10"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  $('#top').innerHTML = RECIPES.filter((r) => r.where === 'home').slice(0, 4).map(recipeCard).join('');
-  const homeIds = ['wildberry-spritz', 'watermelon-negroni', 'special-bellini', 'passion-vanilla-tiny', 'oblepiha-med-limon', 'klyukva-citrus-rozmarin', 'mango-marakuya-kokos', 'zhimolost-zemlyanika-smorodina'];
-  $('#home').innerHTML = homeIds.map((id) => productCard(byId(PRODUCTS, id))).join('');
+  // Витрина магазина: только то, что продаём домой, с кнопкой «В корзину» прямо на карточке
+  const HITS = ['wildberry-spritz', 'watermelon-negroni', 'special-bellini', 'passion-vanilla-tiny', 'klyukva-citrus-rozmarin', 'mango-marakuya-kokos', 'zhimolost-zemlyanika-smorodina', 'oblepiha-donnik'];
+  const shop = PRODUCTS.filter((p) => p.price && p.img);
+  const SHELVES = { hits: ['Хиты для дома', (p) => HITS.includes(p.id)], cocktail: ['Коктейльная серия', (p) => p.line === 'cocktail'], lemonade: ['Для лимонадов', (p) => p.uses.includes('lemonade')], tea: ['Для чая', (p) => p.uses.includes('tea')] };
+  let shelf = 'hits';
+  function showShop() {
+    $('#shopChips').innerHTML = Object.entries(SHELVES).map(([k, [t]]) => `<button type="button" class="chip${k === shelf ? ' is-on' : ''}" data-shelf="${k}">${t}</button>`).join('');
+    const list = shop.filter(SHELVES[shelf][1]);
+    const rank = (p) => (HITS.includes(p.id) ? HITS.indexOf(p.id) : 99);
+    list.sort((a, b) => rank(a) - rank(b));
+    $('#shopCount').textContent = `${list.length} поз.`;
+    $('#shop').innerHTML = list.map((p) => `<div class="shop-item">${productCard(p)}<button type="button" class="btn btn--wine btn--sm" data-add="${p.id}">В корзину · ${rub(p.price)}</button></div>`).join('');
+  }
+  $('#shopChips').addEventListener('click', (e) => { const c = e.target.closest('[data-shelf]'); if (c) { shelf = c.dataset.shelf; showShop(); } });
+  $('#shop').addEventListener('click', (e) => { const b = e.target.closest('[data-add]'); if (b) { cart.add(b.dataset.add); toast('Добавили в корзину'); } });
+  showShop();
 
   const Q = [
     { k: 'guests', q: 'Сколько человек будет на празднике?', o: [['2–4', 1], ['5–10', 2], ['Больше 10', 3]] },
