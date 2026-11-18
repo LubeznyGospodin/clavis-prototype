@@ -5,47 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Каталог · CLAVIS</title>
-<meta name="description" content="Кордиалы, концентраты, коктейльная серия и новинки CLAVIS. Фильтры по линейке, вкусу и применению.">
+<meta name="description" content="Кордиалы, концентраты, коктейльная серия, FRUITOPIA и новинки CLAVIS. Поиск по вкусу, фильтры по применению, типу и сладости.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=8">
+<link rel="stylesheet" href="css/site.css?v=9">
 </head>
 <body>
 <div data-header></div>
 <main id="main">
-  <section class="page-hero" style="padding-bottom:28px">
+  <section class="page-hero" style="padding-bottom:24px">
     <div class="wrap">
       <div class="crumbs"><a href="index.html">Главная</a> / Каталог</div>
-      <h1>Каталог</h1>
+      <div class="split" style="align-items:end;gap:24px">
+        <h1 style="margin:0">Каталог</h1>
+        <p class="lead" style="margin:0">Кордиалы и концентраты 0% ABV. Ищите по вкусу или ингредиенту, а в параметрах сузьте выбор по типу и сладости.</p>
+      </div>
     </div>
   </section>
   <section class="section" style="padding-top:0">
     <div class="wrap">
-      <a class="new-head" href="katalog.html?line=new" data-line-link="new"><b>Новинки</b><span>11 позиций: северные ягоды, хвоя, свежие соки →</span></a>
-      <div class="explain"><span><b>Кордиал, концентрат или сироп?</b> Кордиал уже содержит кислоту и пряность, концентрат даёт плотный вкус для лимонадов и чая, сироп добавляет только сладость.</span><a class="link" href="kordial-koncentrat-sirop.html">Сравнить подробно</a></div>
-      <div class="filters" id="filters"></div>
+      <div class="seg" id="seg"></div>
+      <div class="fbar">
+        <div class="fbar__row">
+          <label class="fbar__search"><span class="sr">Поиск по вкусу</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="Вкус или ингредиент: малина, пихта…" autocomplete="off"></label>
+          <div class="fbar__chips" id="quick"></div>
+          <span class="fbar__count" id="count"></span>
+        </div>
+        <button class="fbar__toggle" type="button" id="toggle" aria-expanded="false">› Параметры: вкус, тип, сладость</button>
+        <div class="fbar__params" id="params" hidden></div>
+        <div class="fbar__active" id="active"></div>
+      </div>
       <div class="products" id="grid"></div>
+      <p class="muted" style="margin-top:40px">Не знаете, чем кордиал отличается от сиропа? <a class="link" href="kordial-koncentrat-sirop.html">Сравнение по составу и закладке</a></p>
     </div>
   </section>
 </main>
 <div data-footer></div>
-<script src="js/data.js?v=8"></script>
-<script src="js/site.js?v=8"></script>
+<script src="js/data.js?v=9"></script>
+<script src="js/site.js?v=9"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const st = { line: param('line') || '', family: param('family') || '', use: param('use') || '' };
-  const row = (key, label, items) => `<div class="filter-row"><span>${label}</span><button class="chip${st[key] ? '' : ' is-on'}" data-k="${key}" data-v="">Все</button>${items.map(([v, t]) => `<button class="chip${st[key] === v ? ' is-on' : ''}" data-k="${key}" data-v="${v}">${t}</button>`).join('')}</div>`;
-  function render() {
-    $('#filters').innerHTML = row('line', 'Линейка', LINES.map((l) => [l.id, l.name])) + row('family', 'Вкусовая семья', FAMILIES.map((f) => [f.id, f.name])) + row('use', 'Применение', Object.entries(USES));
-    // Позиции с фото идут первыми, пока у части новинок нет съёмки
-    const list = PRODUCTS.filter((p) => (!st.line || p.line === st.line) && (!st.family || p.family === st.family) && (!st.use || p.uses.includes(st.use))).sort((a, b) => !!b.img - !!a.img);
-    const extraLine = st.line === 'fruitopia' || st.line === 'perfume';
-    $('#grid').innerHTML = list.length ? list.map(productCard).join('') : `<div class="empty" style="grid-column:1/-1">${extraLine ? `Позиции линейки ${esc(lineName(st.line))} менеджер пришлёт вместе с прайсом.<br><br><a class="btn btn--wine" href="kontakty.html">Запросить состав линейки</a>` : 'Под эти фильтры ничего не нашлось. Попробуйте убрать один из них.'}</div>`;
-    const q = new URLSearchParams(Object.entries(st).filter(([, v]) => v)).toString();
-    history.replaceState(null, '', q ? '?' + q : location.pathname);
+  const TYPES = { cordial: 'Кордиал', concentrate: 'Концентрат', syrup: 'Сироп', cocktail: 'Коктейльная основа', juice: 'Сок', tonic: 'Тоник' };
+  const SWEET = { light: ['Лёгкая', 0, 35], mid: ['Средняя', 35, 45], dense: ['Плотная', 45, 99] };
+  const brix = (p) => parseFloat(String(p.brix).replace(',', '.'));
+  const counts = Object.fromEntries(LINES.map((l) => [l.id, PRODUCTS.filter((p) => p.line === l.id).length]));
+  const st = { line: param('line') || '', use: param('use') || '', family: param('family') || '', type: '', sweet: '', home: false, q: '' };
+
+  // Плитки линеек сверху, как сегменты в базе моделей
+  function seg() {
+    $('#seg').innerHTML = [['', 'Весь каталог', `${PRODUCTS.length} позиций`], ...LINES.map((l) => [l.id, l.name, counts[l.id] ? `${counts[l.id]} поз. · ${l.note}` : l.note])]
+      .map(([id, t, s]) => `<button type="button" class="seg__tile${st.line === id ? ' is-on' : ''}${id === 'new' ? ' seg__tile--new' : ''}" data-line="${id}"><b>${t}</b><span>${s}</span></button>`).join('');
   }
-  $('#filters').addEventListener('click', (e) => { const c = e.target.closest('.chip'); if (!c) return; st[c.dataset.k] = c.dataset.v; render(); });
-  $('[data-line-link]').addEventListener('click', (e) => { e.preventDefault(); st.line = 'new'; st.family = st.use = ''; render(); $('#filters').scrollIntoView({ behavior: 'smooth' }); });
+  const chip = (k, v, t) => `<button type="button" class="chip${st[k] === v ? ' is-on' : ''}" data-k="${k}" data-v="${v}">${t}</button>`;
+  const group = (title, k, items) => `<div class="fbar__group"><div class="eyebrow">${title}</div><div class="fbar__chips">${chip(k, '', 'Любой')}${items.map(([v, t]) => chip(k, v, t)).join('')}</div></div>`;
+
+  function match(p) {
+    const q = st.q.trim().toLowerCase();
+    return (!st.line || p.line === st.line) && (!st.use || p.uses.includes(st.use)) && (!st.family || p.family === st.family) && (!st.type || p.type === st.type)
+      && (!st.sweet || (p.brix && brix(p) >= SWEET[st.sweet][1] && brix(p) < SWEET[st.sweet][2])) && (!st.home || p.price)
+      && (!q || (p.name + ' ' + p.profile).toLowerCase().includes(q));
+  }
+
+  function render() {
+    seg();
+    $('#quick').innerHTML = chip('use', '', 'Все') + Object.entries(USES).map(([v, t]) => chip('use', v, t)).join('');
+    $('#params').innerHTML = group('Вкусовая семья', 'family', FAMILIES.map((f) => [f.id, f.name])) + group('Тип', 'type', Object.entries(TYPES))
+      + group('Сладость, Brix', 'sweet', Object.entries(SWEET).map(([v, [t, a, b]]) => [v, `${t} ${b < 99 ? `${a}–${b}` : `от ${a}`}`]))
+      + `<div class="fbar__group"><div class="eyebrow">Покупка</div><div class="fbar__chips"><button type="button" class="chip${st.home ? ' is-on' : ''}" data-home>Можно купить домой</button></div></div>`;
+    const list = PRODUCTS.filter(match).sort((a, b) => !!b.img - !!a.img);
+    const n = list.length;
+    $('#count').textContent = `${n} ${n % 10 === 1 && n % 100 !== 11 ? 'позиция' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'позиции' : 'позиций'}`;
+    const tags = [st.line && lineName(st.line), st.use && USES[st.use], st.family && family(st.family).name, st.type && TYPES[st.type], st.sweet && SWEET[st.sweet][0] + ' сладость', st.home && 'Домой', st.q && `«${st.q}»`].filter(Boolean);
+    $('#active').innerHTML = tags.length ? tags.map((t) => `<span class="tag">${esc(t)}</span>`).join('') + '<button type="button" class="link" data-reset style="background:none;border:0;cursor:pointer;font-size:14px">Сбросить</button>' : '';
+    $('#grid').innerHTML = n ? list.map(productCard).join('') : `<div class="empty" style="grid-column:1/-1">${st.line === 'perfume' ? 'Состав линейки парфюмов менеджер пришлёт вместе с прайсом.<br><br><a class="btn btn--wine" href="kontakty.html">Запросить состав линейки</a>' : 'Ничего не нашлось. Уберите один из фильтров или измените запрос.'}</div>`;
+    const qs = new URLSearchParams(Object.entries({ line: st.line, use: st.use, family: st.family }).filter(([, v]) => v)).toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  }
+
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-line],[data-k],[data-home],[data-reset]');
+    if (!t || !t.closest('main')) return;
+    if (t.dataset.line !== undefined) st.line = st.line === t.dataset.line ? '' : t.dataset.line;
+    else if (t.dataset.k) st[t.dataset.k] = t.dataset.v;
+    else if (t.hasAttribute('data-home')) st.home = !st.home;
+    else { Object.assign(st, { line: '', use: '', family: '', type: '', sweet: '', home: false, q: '' }); $('#q').value = ''; }
+    render();
+  });
+  $('#q').addEventListener('input', (e) => { st.q = e.target.value; render(); });
+  $('#toggle').addEventListener('click', () => {
+    const p = $('#params'), open = p.hidden; p.hidden = !open;
+    $('#toggle').setAttribute('aria-expanded', open); $('#toggle').textContent = (open ? '⌄' : '›') + ' Параметры: вкус, тип, сладость';
+  });
+  if (st.family) $('#toggle').click();
   render();
 });
 </script>

@@ -86,7 +86,7 @@ function archFor(p, extra = '') { return `<div class="arch-frame">${botanic(p.fa
 function productCard(p) {
   const priceText = p.price ? rub(p.price) : 'по запросу';
   return `<a class="product" href="tovar.html?id=${p.id}">
-    ${archFor(p)}
+    ${archFor(p, p.line === 'new' ? '<span class="pbadge">Новинка</span>' : '')}
     <div class="product__line">${esc(lineName(p.line))}</div>
     <div class="product__name">${esc(p.name)}</div>
     <div class="product__meta"><span>${esc(family(p.family).name)} · ${esc(p.vol)}</span><b>${priceText}</b></div>
@@ -101,9 +101,9 @@ function lineCards() {
   return LINES.map((l) => `<a class="line-card" href="katalog.html?line=${l.id}">${archFor(face[l.id])}<b>${l.name}</b><span>${counts[l.id]} поз. · ${l.note}</span></a>`).join('');
 }
 
-// Логотипы партнёров со слайда колоды для HoReCa
+// Стена логотипов партнёров: каждый логотип отдельным файлом
 function partnersImg() {
-  return `<img class="logos" src="img/partners.webp" alt="Партнёры CLAVIS: ${esc(PARTNERS.join(', '))}" loading="lazy">`;
+  return `<ul class="logo-wall">${PARTNERS.map(([f, n]) => `<li><img src="img/logos/${f}.png" alt="${esc(n)}" loading="lazy"></li>`).join('')}</ul>`;
 }
 
 function recipeCard(r) {
@@ -136,7 +136,7 @@ const tasting = {
 };
 function syncBadges() {
   $$('[data-badge="cart"]').forEach((b) => { b.textContent = cart.count(); b.dataset.n = cart.count(); });
-  $$('[data-badge="set"]').forEach((b) => { const n = tasting.all().length; b.textContent = n ? `${n}/6` : ''; b.dataset.n = n; });
+  $$('[data-badge="set"]').forEach((b) => { const n = tasting.all().length; b.textContent = n || ''; b.dataset.n = n; });
 }
 
 /* ---------- Тост ---------- */
@@ -149,7 +149,6 @@ function toast(t) {
 
 /* ---------- Шапка и подвал ---------- */
 const ICON_CART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/></svg>';
-const ICON_GLASS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12l-1.2 7.5a4.9 4.9 0 0 1-9.6 0z"/><path d="M12 15v6M8 21h8"/></svg>';
 
 function header() {
   const here = location.pathname.split('/').pop() || 'index.html';
@@ -167,9 +166,8 @@ function header() {
       ${a('katalog.html', 'Каталог')}${a('recepty.html', 'Рецепты')}${a('dlya-doma.html', 'Для дома')}${a('zhurnal.html', 'Журнал')}${a('o-kompanii.html', 'О компании')}${a('kontakty.html', 'Контакты')}
     </nav>
     <div class="top__tools">
-      <a class="icon-btn" href="zavedeniyam.html#form" title="Дегустационный сет">${ICON_GLASS}<span class="t">Сет</span><span class="badge" data-badge="set"></span></a>
       <a class="icon-btn" href="korzina.html" title="Корзина">${ICON_CART}<span class="t">Корзина</span><span class="badge" data-badge="cart"></span></a>
-      <a class="btn btn--wine btn--sm" href="zavedeniyam.html#form">Заказать дегустацию</a>
+      <a class="btn btn--wine btn--sm" href="zavedeniyam.html#form" title="Вкусы, которые вы отметили в каталоге, попадут в заявку">Заказать дегустацию<span class="badge badge--light" data-badge="set"></span></a>
       <button class="icon-btn burger" type="button" aria-label="Меню" aria-expanded="false" data-burger>☰</button>
     </div>
   </div></header>

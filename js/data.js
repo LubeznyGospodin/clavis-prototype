@@ -145,6 +145,12 @@ const STATS = [
   { n: '30 млн', t: 'напитков приготовили партнёры' },
 ];
 
-const PARTNERS = ['Lucky Group', 'Урюк', 'Чайхона №1', 'Раппопорт', 'Моремания', 'Novikov Group', 'Pinskiy & Co', 'Тануки', 'Stars Coffee', 'Профсоюз', 'Vasilchuki', 'Якитория', 'Schmidt', 'François de Martignac', 'Havana Club', 'Jameson', 'Hine', 'The Macallan'];
+// Логотипы со слайда колоды для HoReCa, порезаны по одному в img/logos/
+const PARTNERS = [
+  ['novikov', 'Novikov Group'], ['pinskiy', 'Pinskiy & Co'], ['vasilchuki', 'Vasilchuki'], ['tanuki', 'Тануки'],
+  ['yakitoriya', 'Якитория'], ['chayhona-1', 'Чайхона №1'], ['uryuk', 'Урюк'], ['rappoport', 'Рестораны Раппопорта'],
+  ['lucky-group', 'Lucky Group'], ['stars-coffee', 'Stars Coffee'], ['moremaniya', 'Моремания'], ['macallan', 'The Macallan'],
+  ['jameson', 'Jameson'], ['hine', 'Hine'], ['schmidt', 'Schmidt'], ['martignac', 'François de Martignac'],
+];
 
 const CONTACTS = { phone: '+7 977 644-88-45', phoneHref: '+79776448845', email: 'order.clavis@yandex.ru' };
