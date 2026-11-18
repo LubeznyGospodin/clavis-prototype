@@ -8,7 +8,7 @@
 <meta name="description" content="Кордиалы и концентраты CLAVIS: напиток за минуту, 15–40 порций из бутылки, 0% ABV. Для баров, дистрибьюторов и дома.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v=8">
 </head>
 <body>
 <div data-header></div>
@@ -18,8 +18,7 @@
     <div class="hero__steps" aria-hidden="true"><div data-step="0"></div><div data-step="1"></div><div data-step="2"></div><div data-step="3"></div></div>
     <div class="wrap hero__stage">
       <div class="hero__copy">
-        <div class="eyebrow">Кордиалы и концентраты · 0% ABV</div>
-        <h1>Сложный вкус. Простое приготовление.</h1>
+        <h1 class="hero__title">Сложный вкус. Простое приготовление.</h1>
         <p class="lead">Основы CLAVIS для коктейлей, лимонадов и чая. Бармен наливает 30 мл, добавляет лёд и содовую, и напиток готов.</p>
         <div class="btns"><a class="btn" href="dlya-biznesa.html">Для бизнеса</a><a class="btn btn--ghost" href="dlya-doma.html">Для дома</a></div>
         <div class="theses">
@@ -39,8 +38,7 @@
   <section class="section section--paper">
     <div class="wrap">
       <div class="stats" id="stats"></div>
-      <div class="partners" id="partners"></div>
-      <p class="muted" style="margin-top:18px"><a class="link" href="o-kompanii.html">О компании</a></p>
+      <div class="partners"><div class="eyebrow">С CLAVIS работают федеральные сети и локальные бары</div><div id="partners"></div></div>
     </div>
   </section>
 
@@ -147,8 +145,8 @@
 </div>
 
 <div data-footer></div>
-<script src="js/data.js"></script>
-<script src="js/site.js"></script>
+<script src="js/data.js?v=8"></script>
+<script src="js/site.js?v=8"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   // Первый экран: бутылка в арке меняет вкус вместе с тезисами
@@ -172,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $$('[data-step]').forEach((s) => io.observe(s));
 
   $('#stats').innerHTML = STATS.map((s) => `<div class="stat"><b>${s.n}</b><span>${s.t}</span></div>`).join('');
-  $('#partners').innerHTML = PARTNERS.map((p) => `<span>${p}</span>`).join('');
+  $('#partners').innerHTML = partnersImg();
 
   $('#lines').innerHTML = lineCards();
 

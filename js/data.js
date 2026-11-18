@@ -84,36 +84,36 @@ const PHOTOS = ['moroshka-malina-pihta', 'klyukva-citrus-rozmarin', 'malina-mara
 PRODUCTS.forEach((p) => { if (PHOTOS.includes(p.id)) p.img = `img/p/${p.id}.webp`; });
 
 const RECIPES = [
-  { id: 'yudzu-highball', name: 'Юдзу-хайбол', kind: 'cocktail', where: 'bar', alcohol: true, product: 'yudzu-bambuk-lemongrass', glass: 'Хайбол', method: 'Билд', time: '1 минута',
+  { id: 'yudzu-highball', img: 'img/cocktail-3.webp', name: 'Юдзу-хайбол', kind: 'cocktail', where: 'bar', alcohol: true, product: 'yudzu-bambuk-lemongrass', glass: 'Хайбол', method: 'Билд', time: '1 минута',
     items: ['30 мл CLAVIS Юдзу / Бамбук / Лемонграсс', '40 мл джина', '120 мл содовой', 'Лёд доверху'], steps: ['Наполните хайбол льдом.', 'Влейте основу и джин.', 'Долейте содовую и один раз перемешайте барной ложкой.'] },
-  { id: 'shiso-spark', name: 'Шисо в купе', kind: 'mocktail', where: 'bar', alcohol: false, product: 'shiso-zemlyanika-lemongrass', glass: 'Купе', method: 'Билд', time: '1 минута',
+  { id: 'shiso-spark', img: 'img/format-mocktail.webp', name: 'Шисо в купе', kind: 'mocktail', where: 'bar', alcohol: false, product: 'shiso-zemlyanika-lemongrass', glass: 'Купе', method: 'Билд', time: '1 минута',
     items: ['30 мл CLAVIS Шисо / Земляника / Лемонграсс', '100 мл безалкогольного игристого'], steps: ['Охладите купе.', 'Влейте основу, долейте игристое.'] },
-  { id: 'mango-coconut', name: 'Манго на кокосовой воде', kind: 'mocktail', where: 'home', alcohol: false, product: 'mango-marakuya-kokos', glass: 'Рокс', method: 'Билд', time: '1 минута',
+  { id: 'mango-coconut', img: 'img/sparkling.webp', name: 'Манго на кокосовой воде', kind: 'mocktail', where: 'home', alcohol: false, product: 'mango-marakuya-kokos', glass: 'Рокс', method: 'Билд', time: '1 минута',
     items: ['30 мл CLAVIS Манго / Маракуйя / Кокос', '90 мл кокосовой воды', 'Лёд'], steps: ['Положите лёд в рокс.', 'Влейте основу и кокосовую воду, перемешайте.'] },
-  { id: 'oblepiha-lemonade', name: 'Облепиховый лимонад', kind: 'lemonade', where: 'home', alcohol: false, product: 'oblepiha-med-limon', glass: 'Хайбол', method: 'Билд', time: '2 минуты',
+  { id: 'oblepiha-lemonade', img: 'img/format-lemonade.webp', name: 'Облепиховый лимонад', kind: 'lemonade', where: 'home', alcohol: false, product: 'oblepiha-med-limon', glass: 'Хайбол', method: 'Билд', time: '2 минуты',
     items: ['30 мл CLAVIS Облепиха / Мёд / Лимон', '150 мл содовой', 'Лёд', 'Долька лимона'], steps: ['Наполните стакан льдом.', 'Влейте основу и содовую.', 'Украсьте долькой лимона.'] },
-  { id: 'klyukva-tonic', name: 'Клюква с тоником', kind: 'lemonade', where: 'home', alcohol: false, product: 'klyukva-citrus-rozmarin', glass: 'Хайбол', method: 'Билд', time: '1 минута',
+  { id: 'klyukva-tonic', img: 'img/pink.webp', name: 'Клюква с тоником', kind: 'lemonade', where: 'home', alcohol: false, product: 'klyukva-citrus-rozmarin', glass: 'Хайбол', method: 'Билд', time: '1 минута',
     items: ['30 мл CLAVIS Клюква / Цитрус / Розмарин', '150 мл тоника', 'Лёд', 'Веточка розмарина'], steps: ['Наполните стакан льдом.', 'Влейте основу, долейте тоник.', 'Добавьте розмарин.'] },
-  { id: 'rose-sour', name: 'Розовый сауэр', kind: 'cocktail', where: 'bar', alcohol: true, product: 'roza-reven-greypfrut', glass: 'Купе', method: 'Шейк', time: '2 минуты',
+  { id: 'rose-sour', img: 'img/format-cocktail.webp', name: 'Розовый сауэр', kind: 'cocktail', where: 'bar', alcohol: true, product: 'roza-reven-greypfrut', glass: 'Купе', method: 'Шейк', time: '2 минуты',
     items: ['45 мл CLAVIS Роза / Ревень / Грейпфрут', '40 мл бурбона', '20 мл аквафабы', 'Лёд'], steps: ['Взбейте все ингредиенты в шейкере без льда.', 'Добавьте лёд и взбейте ещё раз.', 'Процедите в охлаждённое купе.'] },
-  { id: 'wildberry-spritz-r', name: 'Ягодный спритц', kind: 'cocktail', where: 'home', alcohol: true, product: 'wildberry-spritz', glass: 'Винный бокал', method: 'Билд', time: '1 минута',
+  { id: 'wildberry-spritz-r', img: 'img/cocktail-4.webp', name: 'Ягодный спритц', kind: 'cocktail', where: 'home', alcohol: true, product: 'wildberry-spritz', glass: 'Винный бокал', method: 'Билд', time: '1 минута',
     items: ['40 мл CLAVIS Wildberry Spritz', '60 мл игристого', '30 мл содовой', 'Лёд'], steps: ['Наполните бокал льдом.', 'Влейте основу, игристое и содовую.'] },
-  { id: 'bellini-zero', name: 'Беллини без алкоголя', kind: 'mocktail', where: 'home', alcohol: false, product: 'special-bellini', glass: 'Флюте', method: 'Билд', time: '1 минута',
+  { id: 'bellini-zero', img: 'img/cocktail-2.webp', name: 'Беллини без алкоголя', kind: 'mocktail', where: 'home', alcohol: false, product: 'special-bellini', glass: 'Флюте', method: 'Билд', time: '1 минута',
     items: ['40 мл CLAVIS Special Bellini', '100 мл безалкогольного игристого'], steps: ['Влейте основу в охлаждённый бокал.', 'Аккуратно долейте игристое.'] },
-  { id: 'watermelon-negroni-r', name: 'Арбузный негрони', kind: 'cocktail', where: 'bar', alcohol: true, product: 'watermelon-negroni', glass: 'Рокс', method: 'Стир', time: '2 минуты',
+  { id: 'watermelon-negroni-r', img: 'img/negroni.webp', name: 'Арбузный негрони', kind: 'cocktail', where: 'bar', alcohol: true, product: 'watermelon-negroni', glass: 'Рокс', method: 'Стир', time: '2 минуты',
     items: ['40 мл CLAVIS Watermelon Negroni', '30 мл джина', 'Крупный лёд', 'Апельсиновая цедра'], steps: ['Перемешайте основу и джин со льдом в стакане для смешивания.', 'Процедите в рокс на крупный лёд.', 'Сбрызните цедрой.'] },
-  { id: 'masala-tea', name: 'Чай масала со смородиной', kind: 'hot', where: 'home', alcohol: false, product: 'smorodina-apelsin-masala', glass: 'Чайник', method: 'Заварить', time: '3 минуты',
+  { id: 'masala-tea', img: 'img/format-hot.webp', name: 'Чай масала со смородиной', kind: 'hot', where: 'home', alcohol: false, product: 'smorodina-apelsin-masala', glass: 'Чайник', method: 'Заварить', time: '3 минуты',
     items: ['30 мл CLAVIS Смородина / Апельсин / Масала', '150 мл горячего чёрного чая', 'Долька апельсина'], steps: ['Заварите чёрный чай.', 'Влейте основу в чашку и долейте чай.', 'Добавьте дольку апельсина.'] },
-  { id: 'glintveyn-zero', name: 'Безалкогольный глинтвейн', kind: 'hot', where: 'home', alcohol: false, product: 'glintveyn', glass: 'Кружка', method: 'Нагреть', time: '3 минуты',
+  { id: 'glintveyn-zero', img: 'img/two-glasses.webp', name: 'Безалкогольный глинтвейн', kind: 'hot', where: 'home', alcohol: false, product: 'glintveyn', glass: 'Кружка', method: 'Нагреть', time: '3 минуты',
     items: ['40 мл CLAVIS Глинтвейн', '150 мл горячей воды', 'Палочка корицы'], steps: ['Нагрейте воду почти до кипения.', 'Влейте основу и перемешайте.', 'Добавьте корицу.'] },
-  { id: 'vishnya-highball', name: 'Вишнёвый хайбол', kind: 'cocktail', where: 'bar', alcohol: true, product: 'belgiyskaya-vishnya', glass: 'Хайбол', method: 'Билд', time: '1 минута',
+  { id: 'vishnya-highball', img: 'img/martini.webp', name: 'Вишнёвый хайбол', kind: 'cocktail', where: 'bar', alcohol: true, product: 'belgiyskaya-vishnya', glass: 'Хайбол', method: 'Билд', time: '1 минута',
     items: ['30 мл CLAVIS Бельгийская вишня', '40 мл рома', '120 мл содовой', 'Лёд'], steps: ['Наполните хайбол льдом.', 'Влейте основу и ром, долейте содовую.'] },
 ];
 
 const KINDS = { cocktail: 'Коктейль', mocktail: 'Моктейль', lemonade: 'Лимонад', hot: 'Горячий' };
 
 const ARTICLES = [
-  { id: 'sebestoimost-porcii', title: 'Сколько стоит порция коктейля на основе CLAVIS', tag: 'Для бара',
+  { id: 'sebestoimost-porcii', img: 'img/dist-bar.webp', title: 'Сколько стоит порция коктейля на основе CLAVIS', tag: 'Для бара',
     lead: 'Считаем себестоимость на реальных цифрах: цена бутылки, закладка и число порций.',
     body: [
       'Бутылка CLAVIS 0,75 л стоит 800 ₽. Для хайбола бармен наливает 30 мл основы, из бутылки выходит 25 порций. Основа в одном хайболе обходится в 32 ₽.',
@@ -121,7 +121,7 @@ const ARTICLES = [
       'Кислота уже в составе кордиала, поэтому бармену не нужно выжимать лайм за стойкой. Бар экономит на закупке фреша и на часах бармена, а списаний в конце смены становится меньше.',
       'Посчитать свою карту можно в калькуляторе на странице для заведений. Введите закладку и цену бутылки, и сайт покажет выход порций.',
     ] },
-  { id: 'odna-butylka-na-prazdnik', title: 'Одна бутылка на весь праздник', tag: 'Для дома',
+  { id: 'odna-butylka-na-prazdnik', img: 'img/format-lemonade.webp', title: 'Одна бутылка на весь праздник', tag: 'Для дома',
     lead: 'Лимонад детям и хайбол взрослым из одного кордиала за две минуты.',
     body: [
       'Домашнему бару не нужен шейкер. Хватит бутылки CLAVIS, льда и содовой.',
@@ -129,7 +129,7 @@ const ARTICLES = [
       'Одной бутылки 0,75 л хватит примерно на 25 стаканов. Для компании из десяти человек это два-три стакана на каждого.',
       'Подобрать вкус под ваш праздник поможет короткий тест на странице «Для дома».',
     ] },
-  { id: 'novinki', title: 'Новинки: северные ягоды и хвоя', tag: 'Новинки',
+  { id: 'novinki', img: 'img/new-2026.webp', title: 'Новинки: северные ягоды и хвоя', tag: 'Новинки',
     lead: 'Одиннадцать новых позиций: концентраты, кордиалы, соки прямого отжима и основа для тоника.',
     body: [
       'В новой линейке CLAVIS собрал вкусы северного леса: брусника с пихтой, морошка с малиной, калина. Рядом стоят гранат с чёрной смородиной и облепиха с мёдом.',
@@ -145,6 +145,6 @@ const STATS = [
   { n: '30 млн', t: 'напитков приготовили партнёры' },
 ];
 
-const PARTNERS = ['Novikov Group', 'Pinsky & Co', 'Vasilchuki', 'Азбука Вкуса', 'Перекрёсток', 'ВкусВилл'];
+const PARTNERS = ['Lucky Group', 'Урюк', 'Чайхона №1', 'Раппопорт', 'Моремания', 'Novikov Group', 'Pinskiy & Co', 'Тануки', 'Stars Coffee', 'Профсоюз', 'Vasilchuki', 'Якитория', 'Schmidt', 'François de Martignac', 'Havana Club', 'Jameson', 'Hine', 'The Macallan'];
 
 const CONTACTS = { phone: '+7 977 644-88-45', phoneHref: '+79776448845', email: 'order.clavis@yandex.ru' };

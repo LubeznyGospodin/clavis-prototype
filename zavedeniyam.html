@@ -8,7 +8,7 @@
 <meta name="description" content="Бесплатно проработаем меню вашего бара с ведущими миксологами страны. Напиток за минуту, порция дешевле на 30–50%.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v=8">
 </head>
 <body class="has-sticky">
 <div data-header></div>
@@ -18,8 +18,9 @@
       <div>
         <div class="crumbs"><a href="index.html">Главная</a> / <a href="dlya-biznesa.html">Для бизнеса</a> / Заведениям</div>
         <div class="eyebrow">Бары, рестораны, кофейни</div>
-        <h1>Бесплатно проработаем меню вашего заведения с ведущими миксологами страны</h1>
+        <h1 class="h1--long">Бесплатно проработаем меню вашего заведения с ведущими миксологами страны</h1>
         <p class="lead">Миксолог CLAVIS приедет на дегустацию, соберёт авторские напитки под концепцию заведения и научит команду готовить их за минуту.</p>
+        <img class="hero-photo" src="img/dist-bar.webp" alt="Коктейли на основах CLAVIS">
       </div>
       <form class="form card" data-lead="venue" data-with-set>
         <h3>Заказать дегустацию</h3>
@@ -94,12 +95,12 @@
 </main>
 <div class="sticky-cta"><a class="btn btn--wine" href="#form">Заказать дегустацию</a></div>
 <div data-footer></div>
-<script src="js/data.js"></script>
-<script src="js/site.js"></script>
+<script src="js/data.js?v=8"></script>
+<script src="js/site.js?v=8"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   $('[data-consent]').innerHTML = consentField('v-consent');
-  $('#partners').innerHTML = PARTNERS.map((p) => `<span>${p}</span>`).join('');
+  $('#partners').innerHTML = partnersImg();
   const s = tasting.all();
   $('#setList').innerHTML = s.length ? s.map((id) => `<span class="tag">${esc(byId(PRODUCTS, id).name)}</span>`).join('') : '<span class="muted" style="font-size:14px">Сет пока пуст. Добавьте вкусы кнопкой «Добавить в дегустацию» в <a href="katalog.html">каталоге</a> или оставьте выбор миксологу.</span>';
   const calc = () => {

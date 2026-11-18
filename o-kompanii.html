@@ -8,7 +8,7 @@
 <meta name="description" content="CLAVIS варит основы для коктейлей с 2020 года. История, производство, документы.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css">
+<link rel="stylesheet" href="css/site.css?v=8">
 </head>
 <body>
 <div data-header></div>
@@ -51,8 +51,8 @@
   </section>
 </main>
 <div data-footer></div>
-<script src="js/data.js"></script>
-<script src="js/site.js"></script>
-<script>document.addEventListener('DOMContentLoaded', () => { $('#stats').innerHTML = STATS.map((s) => `<div class="stat"><b>${s.n}</b><span>${s.t}</span></div>`).join(''); $('#partners').innerHTML = PARTNERS.map((p) => `<span>${p}</span>`).join(''); });</script>
+<script src="js/data.js?v=8"></script>
+<script src="js/site.js?v=8"></script>
+<script>document.addEventListener('DOMContentLoaded', () => { $('#stats').innerHTML = STATS.map((s) => `<div class="stat"><b>${s.n}</b><span>${s.t}</span></div>`).join(''); $('#partners').innerHTML = partnersImg(); });</script>
 </body>
 </html>

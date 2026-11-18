@@ -104,15 +104,15 @@ p { margin: 0 0 1em; }
 /* Первый экран */
 .hero { position: relative; height: 380vh; }
 .hero__stage { position: sticky; top: 72px; height: calc(100vh - 72px); min-height: 600px; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 40px; }
-.hero__copy h1 { margin-bottom: 22px; }
-.hero__copy .lead { margin-bottom: 30px; }
-.hero__visual { justify-self: center; width: min(400px, 80%); }
+.hero__copy .hero__title { font-size: clamp(42px, 5vw, 72px); margin-bottom: 18px; }
+.hero__copy .lead { margin-bottom: 24px; }
+.hero__visual { justify-self: center; width: min(380px, 78%, 52vh); }
 .hero__visual .arch { transition: background-color .6s ease; }
 .hero__visual img.bottle { transition: opacity .5s ease, transform .6s ease; }
 .hero__visual img.bottle.is-off { opacity: 0; transform: translateX(-50%) translateY(16px); }
-.theses { margin-top: 34px; display: grid; gap: 8px; max-width: 460px; }
-.thesis { display: flex; gap: 14px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line); color: var(--muted); transition: color .4s; }
-.thesis b { font: 500 26px/1 var(--serif); color: var(--line); min-width: 34px; transition: color .4s; }
+.theses { margin-top: 24px; display: grid; gap: 0; max-width: 480px; }
+.thesis { display: flex; gap: 14px; align-items: baseline; padding: 9px 0; font-size: 15px; line-height: 1.4; border-top: 1px solid var(--line); color: var(--muted); transition: color .4s; }
+.thesis b { font: 500 22px/1 var(--serif); color: var(--line); min-width: 34px; transition: color .4s; }
 .thesis.is-on { color: var(--ink); }
 .thesis.is-on b { color: var(--wine); }
 .hero__flavor { display: table; margin: 18px auto 0; font-size: 14px; color: var(--muted); }
@@ -131,7 +131,8 @@ p { margin: 0 0 1em; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
 .stat b { display: block; font: 500 clamp(40px, 5vw, 64px)/1 var(--serif); color: var(--wine); margin-bottom: 8px; }
 .stat span { color: var(--muted); font-size: 15px; }
-.partners { display: flex; flex-wrap: wrap; gap: 12px 34px; margin-top: 46px; padding-top: 28px; border-top: 1px solid var(--line); font: 500 22px/1.2 var(--serif); color: var(--muted); }
+.partners { margin-top: 44px; }
+.logos { width: 100%; background: #000; border-radius: var(--radius); }
 @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 
 /* Линейки рядом, как банки у Ciao */
@@ -288,7 +289,9 @@ p { margin: 0 0 1em; }
 
 /* Страница-герой внутренних разделов */
 .page-hero { padding: clamp(48px, 7vw, 96px) 0 clamp(40px, 5vw, 64px); }
-.page-hero h1 { max-width: 900px; margin-bottom: 18px; }
+.page-hero h1 { max-width: 900px; margin-bottom: 18px; font-size: clamp(38px, 4.4vw, 64px); }
+.page-hero h1.h1--long { font-size: clamp(32px, 3.4vw, 48px); }
+.hero-photo { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: var(--radius); margin-top: 28px; }
 .crumbs { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
 .crumbs a { text-decoration: none; }
 .crumbs a:hover { color: var(--wine); }

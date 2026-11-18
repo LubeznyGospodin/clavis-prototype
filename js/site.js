@@ -101,6 +101,11 @@ function lineCards() {
   return LINES.map((l) => `<a class="line-card" href="katalog.html?line=${l.id}">${archFor(face[l.id])}<b>${l.name}</b><span>${counts[l.id]} поз. · ${l.note}</span></a>`).join('');
 }
 
+// Логотипы партнёров со слайда колоды для HoReCa
+function partnersImg() {
+  return `<img class="logos" src="img/partners.webp" alt="Партнёры CLAVIS: ${esc(PARTNERS.join(', '))}" loading="lazy">`;
+}
+
 function recipeCard(r) {
   return `<a class="entry" href="recept.html?id=${r.id}"><div class="entry__img"><img src="${r.img}" alt="${esc(r.name)}" loading="lazy"></div>
     <div class="entry__body"><div class="eyebrow">${KINDS[r.kind]} · ${r.time}</div><h3>${esc(r.name)}</h3><p>${esc(byId(PRODUCTS, r.product).name)}</p></div></a>`;
