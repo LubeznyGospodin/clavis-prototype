@@ -404,3 +404,17 @@ p { margin: 0 0 1em; }
 .shop-item { display: flex; flex-direction: column; }
 .shop-item .product { flex: 1; }
 .shop-item .btn { margin-top: 14px; width: 100%; }
+
+/* Липкая панель каталога: при прокрутке сжимается под шапкой */
+.catbar { position: sticky; top: 72px; z-index: 30; background: var(--cream); padding: 10px 0; margin: -10px 0 24px; transition: padding .2s; }
+.catbar .fbar { margin-bottom: 0; }
+.catbar.is-stuck { padding: 8px 0; box-shadow: 0 10px 18px -14px rgba(31, 26, 23, .35); }
+.catbar.is-stuck .seg { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 8px; scrollbar-width: none; }
+.catbar.is-stuck .seg__tile { flex: none; padding: 7px 14px; border-radius: 999px; }
+.catbar.is-stuck .seg__tile b { font: 600 14px/1.2 var(--sans); white-space: nowrap; }
+.catbar.is-stuck .seg__tile span { display: none; }
+.catbar.is-stuck .fbar { padding: 6px; border-radius: 999px; }
+.catbar.is-stuck .fbar__toggle[aria-expanded="false"], .catbar.is-stuck .fbar__active { display: none; }
+.catbar.is-stuck .fbar__search { min-height: 38px; }
+.catbar.is-stuck .chip { padding: 5px 12px; }
+@media (max-width: 1080px) { .catbar { top: 72px; } }

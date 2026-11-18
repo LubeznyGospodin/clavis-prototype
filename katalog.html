@@ -8,7 +8,7 @@
 <meta name="description" content="Кордиалы, концентраты, коктейльная серия, FRUITOPIA и новинки CLAVIS. Поиск по вкусу, фильтры по применению, типу и сладости.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=10">
+<link rel="stylesheet" href="css/site.css?v=11">
 </head>
 <body>
 <div data-header></div>
@@ -24,6 +24,8 @@
   </section>
   <section class="section" style="padding-top:0">
     <div class="wrap">
+      <div class="catbar-sentinel" id="sentinel"></div>
+      <div class="catbar" id="catbar">
       <div class="seg" id="seg"></div>
       <div class="fbar">
         <div class="fbar__row">
@@ -35,14 +37,15 @@
         <div class="fbar__params" id="params" hidden></div>
         <div class="fbar__active" id="active"></div>
       </div>
+      </div>
       <div class="products" id="grid"></div>
       <p class="muted" style="margin-top:40px">Не знаете, чем кордиал отличается от сиропа? <a class="link" href="kordial-koncentrat-sirop.html">Сравнение по составу и закладке</a></p>
     </div>
   </section>
 </main>
 <div data-footer></div>
-<script src="js/data.js?v=10"></script>
-<script src="js/site.js?v=10"></script>
+<script src="js/data.js?v=11"></script>
+<script src="js/site.js?v=11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const TYPES = { cordial: 'Кордиал', concentrate: 'Концентрат', syrup: 'Сироп', cocktail: 'Коктейльная основа', juice: 'Сок', tonic: 'Тоник' };
@@ -97,6 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#toggle').setAttribute('aria-expanded', open); $('#toggle').textContent = (open ? '⌄' : '›') + ' Параметры: вкус, тип, сладость';
   });
   if (st.family || st.home) $('#toggle').click();
+  // Панель прилипает под шапкой и сжимается, когда ушла за верх экрана
+  new IntersectionObserver(([e]) => $('#catbar').classList.toggle('is-stuck', !e.isIntersecting), { rootMargin: '-73px 0px 0px 0px' }).observe($('#sentinel'));
   render();
 });
 </script>
