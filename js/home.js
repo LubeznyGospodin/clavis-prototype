@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Звук: файлы CC0 с Freesound, подобраны по спектру под звуки ciaoenergy ---------- */
   // click: Squirrel_404 #683048, tick: SignatureSoundsOrg #872340, whoosh и pop: AudioPapkin #648541 и #649061
   const sfx = (() => {
-    let on = store.get('clavis_sound', true);
+    let on = false; // по умолчанию OFF: браузер всё равно молчит до нажатия, а нажатие на ON и есть разрешение
     const AC = window.AudioContext || window.webkitAudioContext;
     // Контекст создаём сразу: браузер держит его на паузе, но файлы уже декодируются и готовы к первому жесту
     const ctx = AC ? new AC() : null;
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let primed = false;
     return {
       get on() { return on; },
-      toggle() { on = !on; store.set('clavis_sound', on); if (on) this.unlock(); return on; },
+      toggle() { on = !on; if (on) this.unlock(); return on; },
       unlock() {
         if (!ctx || !on) return;
         if (ctx.state !== 'running') ctx.resume();
@@ -309,12 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Загрузка ---------- */
   setAct(0, true);
   let done = 0;
-  // Загрузка заканчивается кнопкой входа: нажатие разрешает браузеру звук с первой же прокрутки
   const loader = $('#loader');
-  const finish = () => { loader.classList.add('is-ready'); $('#enter').focus({ preventScroll: true }); };
-  const enter = (snd) => { if (sfx.on !== snd) { sfx.toggle(); paintSound(); } sfx.unlock(); loader.classList.add('is-done'); setTimeout(() => sfx.play('whoosh'), 60); };
-  $('#enter').addEventListener('click', () => enter(true));
-  $('#enterMute').addEventListener('click', () => enter(false));
+  const finish = () => loader.classList.add('is-done');
   HERO.forEach((p) => { const im = new Image(); im.onload = im.onerror = () => { done++; $('#loaderPct').textContent = Math.round((done / N) * 100); if (done === N) setTimeout(finish, 250); }; im.src = p.img; });
   setTimeout(finish, 3000);
   requestAnimationFrame(frame);

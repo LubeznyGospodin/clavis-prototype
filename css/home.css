@@ -6,11 +6,6 @@
 .loader { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; align-content: center; gap: 22px; background: #000; transition: opacity .7s, visibility .7s; }
 .loader img { width: 170px; opacity: .9; }
 .loader b { font: 500 13px/1 var(--sans); letter-spacing: .2em; color: var(--dim); }
-.loader__go, .loader__mute { display: none; }
-.loader.is-ready b { display: none; }
-.loader.is-ready .loader__go { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 30px; border: 0; border-radius: 6px; background: #fff; color: #000; font: 500 14px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; cursor: pointer; box-shadow: 0 0 30px rgba(255, 255, 255, .4); animation: glow 2s ease-in-out infinite; }
-.loader.is-ready .loader__mute { display: block; justify-self: center; background: none; border: 0; color: var(--dim); font: 500 12px/1 var(--sans); text-transform: uppercase; letter-spacing: .1em; cursor: pointer; padding: 10px; }
-@keyframes glow { 50% { box-shadow: 0 0 50px rgba(255, 255, 255, .75); } }
 .loader.is-done { opacity: 0; visibility: hidden; }
 
 /* Шапка */
