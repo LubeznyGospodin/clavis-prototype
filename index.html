@@ -7,118 +7,110 @@
 <title>CLAVIS · основы для коктейлей, лимонадов и чая</title>
 <meta name="description" content="Кордиалы и концентраты CLAVIS: напиток за минуту, 15–40 порций из бутылки, 0% ABV. Для баров, дистрибьюторов и дома.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=12">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,800;1,900&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css?v=13">
+<link rel="stylesheet" href="css/home.css?v=13">
 </head>
-<body>
-<div data-header></div>
+<body class="home">
+
+<div class="loader" id="loader" aria-hidden="true"><img src="img/logo-white.png" alt=""><b id="loaderPct">0</b></div>
+
+<a class="sr" href="#main">К содержанию</a>
+<header class="hbar">
+  <div class="hbar__progress"><i id="progress"></i></div>
+  <button class="sound" type="button" id="sound" aria-pressed="true" aria-label="Звук сайта"><span id="soundTxt">ON</span><span class="sound__bars"><i></i><i></i><i></i><i></i></span></button>
+  <a class="hbar__logo" href="index.html" aria-label="CLAVIS, на главную"><img src="img/logo-white.png" alt="CLAVIS"></a>
+  <div class="hbar__right">
+    <a class="hbar__cart" href="korzina.html" aria-label="Корзина">Корзина<span class="badge" data-badge="cart"></span></a>
+    <div class="hmenu">
+      <button type="button" class="hmenu__btn" id="menuBtn" aria-expanded="false"><span class="hmenu__dots"><i></i><i></i><i></i><i></i></span>Меню</button>
+      <nav class="hmenu__list" aria-label="Главное меню">
+        <a href="#story" data-t="0">Линейка</a><a href="#story" data-t="1.9">Почему CLAVIS</a><a href="#who">Кому CLAVIS</a><a href="katalog.html">Каталог</a><a href="dlya-biznesa.html">Для бизнеса</a><a href="dlya-doma.html">Для дома</a><a href="recepty.html">Рецепты</a><a href="zhurnal.html">Журнал</a><a href="o-kompanii.html">О компании</a><a href="#faq">Вопросы</a>
+      </nav>
+    </div>
+    <a class="hbar__cta" href="kontakty.html">Связаться</a>
+  </div>
+</header>
+<div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+
 <main id="main">
+  <section class="story" id="story">
+    <div class="stage" id="stage">
+      <div class="stage__bg" id="bg"></div>
+      <div class="letters" id="letters" aria-hidden="true"></div>
+      <div class="giant" id="giant" aria-hidden="true"><span>Сложный</span><span>вкус</span></div>
+      <div class="ring" id="ring"></div>
+      <div class="big" id="big"><img id="bigImg" alt=""></div>
+      <div class="trio" id="trio"></div>
+      <div class="spot" id="spot"></div>
 
-  <section class="hero" id="hero">
-    <div class="hero__steps" aria-hidden="true"><div data-step="0"></div><div data-step="1"></div><div data-step="2"></div><div data-step="3"></div></div>
-    <div class="wrap hero__stage">
-      <div class="hero__copy">
-        <h1 class="hero__title">Сложный вкус. Простое приготовление.</h1>
-        <p class="lead">Основы CLAVIS для коктейлей, лимонадов и чая. Бармен наливает 30 мл, добавляет лёд и содовую, и напиток готов.</p>
-        <div class="btns"><a class="btn" href="dlya-biznesa.html">Для бизнеса</a><a class="btn btn--ghost" href="dlya-doma.html">Для дома</a></div>
-        <div class="theses">
-          <div class="thesis is-on"><b>01</b><span>Готовая основа: кислота, сладость и пряность уже в бутылке</span></div>
-          <div class="thesis"><b>02</b><span>Напиток за минуту: основа, лёд и содовая</span></div>
-          <div class="thesis"><b>03</b><span>От 15 до 40 порций из одной бутылки</span></div>
-          <div class="thesis"><b>04</b><span>До 93% натуральных ингредиентов и ни капли алкоголя</span></div>
-        </div>
+      <div class="hero-ui" id="heroUi">
+        <h1 class="sr">CLAVIS: основы для коктейлей, лимонадов и чая</h1>
+        <button class="nav-arrow nav-arrow--l" type="button" id="prev" aria-label="Предыдущий вкус"><i></i><i></i><i></i></button>
+        <button class="nav-arrow nav-arrow--r" type="button" id="next" aria-label="Следующий вкус"><i></i><i></i><i></i></button>
+        <a class="hero-ui__name disp" id="heroName" href="katalog.html"></a>
+        <input class="hero-ui__range" id="range" type="range" min="0" step="1" value="0" aria-label="Выбор вкуса">
+        <div class="hero-ui__hint">Листайте вниз, чтобы узнать больше</div>
       </div>
-      <div class="hero__visual">
-        <div class="arch-frame" id="heroArch"></div>
-        <a class="hero__flavor link" id="heroFlavor" href="katalog.html"></a>
+
+      <div class="panel panel--profile" id="profile">
+        <div class="panel__tag" id="profTag"></div>
+        <h2 class="disp" id="profName"></h2>
+        <p id="profText"></p>
+        <a class="pill" id="profLink" href="katalog.html">Смотреть вкус</a>
       </div>
+
+      <div class="panel panel--benefit" id="benefit">
+        <div class="panel__tag"><span class="x">×</span><s id="benOld"></s></div>
+        <h2 class="disp" id="benTitle"></h2>
+        <p id="benText"></p>
+      </div>
+      <div class="bnav" id="bnav"></div>
+
+      <div class="trio-cap" id="trioCap">Простое приготовление</div>
     </div>
   </section>
 
-  <section class="section section--paper section--tight">
+  <section class="lineup" id="lineup">
+    <div class="wrap lineup__head">
+      <h2 class="disp">Вся линейка</h2>
+      <div class="lineup__chips" id="lineChips"></div>
+    </div>
+    <div class="wave" id="wave" tabindex="0" aria-label="Бутылки CLAVIS, листайте вбок"></div>
+    <div class="wrap lineup__foot"><span id="waveName">Наведите на бутылку</span><a class="pill" href="katalog.html">Весь каталог</a></div>
+  </section>
+
+  <section class="dsec" id="who">
     <div class="wrap">
+      <h2 class="disp dsec__title">Кому CLAVIS</h2>
+      <div class="doors">
+        <a class="door" href="zavedeniyam.html"><img src="img/dist-bar.webp" alt="" loading="lazy"><small>Бары, рестораны, кофейни</small><b class="disp">Заведениям</b><span>Проработаем меню с ведущими миксологами страны</span></a>
+        <a class="door" href="distributoram.html"><img src="img/lineup.webp" alt="" loading="lazy"><small>Оптовым партнёрам</small><b class="disp">Дистрибьюторам</b><span>Растущая категория и бонусы за развитие территории</span></a>
+        <a class="door" href="kontraktnoe-proizvodstvo.html"><img src="img/production.webp" alt="" loading="lazy"><small>Своя рецептура</small><b class="disp">Свой вкус</b><span>Сварим вашу основу партией от 500 литров за 30 дней</span></a>
+        <a class="door" href="dlya-doma.html"><img src="img/cordial-coupe.webp" alt="" loading="lazy"><small>Магазин</small><b class="disp">Для дома</b><span>Коктейльная серия и лимонады с доставкой Ozon и СДЭК</span></a>
+      </div>
       <div class="stats" id="stats"></div>
-      <div class="partners"><div class="eyebrow">С CLAVIS работают федеральные сети и локальные бары</div><div id="partners"></div></div>
+      <div class="eyebrow" style="margin-top:56px">С CLAVIS работают федеральные сети и локальные бары</div>
+      <div id="partners"></div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="dsec" id="faq">
     <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">Ассортимент</div><h2>Шесть линеек CLAVIS и FRUITOPIA</h2></div><a class="link" href="katalog.html">Весь каталог</a></div>
-      <div class="lines" id="lines"></div>
+      <h2 class="disp dsec__title">Частые<br>вопросы</h2>
+      <div class="faqs" id="faqs"></div>
     </div>
   </section>
 
-  <section class="section section--paper">
-    <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">Для бизнеса</div><h2>Три способа работать с CLAVIS</h2></div></div>
-      <div class="grid grid--3">
-        <a class="entry" href="zavedeniyam.html"><div class="entry__img"><img src="img/dist-bar.webp" alt="Коктейли на барной стойке" loading="lazy"></div><div class="entry__body"><div class="eyebrow">Бары, рестораны, кофейни</div><h3>Заведениям</h3><p>Бесплатно проработаем меню с ведущими миксологами страны.</p><span class="link">Заказать дегустацию</span></div></a>
-        <a class="entry" href="distributoram.html"><div class="entry__img"><img src="img/lineup.webp" alt="Линейка бутылок CLAVIS" loading="lazy"></div><div class="entry__body"><div class="eyebrow">Оптовым партнёрам</div><h3>Дистрибьюторам</h3><p>Растущая категория, поддержка бренда и бонусы за развитие территории.</p><span class="link">Обсудить регион</span></div></a>
-        <a class="entry" href="kontraktnoe-proizvodstvo.html"><div class="entry__img"><img src="img/production.webp" alt="Производство CLAVIS" loading="lazy"></div><div class="entry__body"><div class="eyebrow">Своя рецептура</div><h3>Контрактное производство</h3><p>Сварим ваш вкус партией от 500 литров за 30 дней.</p><span class="link">Рассчитать партию</span></div></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">Один продукт, четыре категории</div><h2>Одна бутылка закрывает всю карту напитков</h2></div><a class="link" href="recepty.html">Все рецепты</a></div>
-      <div class="uses">
-        <a class="use" href="recepty.html?kind=cocktail"><img src="img/format-cocktail.webp" alt="" loading="lazy"><small>Основа + крепкое</small><span>Коктейль</span></a>
-        <a class="use" href="recepty.html?kind=lemonade"><img src="img/format-lemonade.webp" alt="" loading="lazy"><small>Основа + содовая</small><span>Лимонад</span></a>
-        <a class="use" href="recepty.html?kind=hot"><img src="img/format-hot.webp" alt="" loading="lazy"><small>Основа + чай</small><span>Чай</span></a>
-        <a class="use" href="recepty.html?kind=cocktail"><img src="img/negroni.webp" alt="" loading="lazy"><small>Основа + выдержка</small><span>Настойка</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--paper">
-    <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">Рецепты</div><h2>Что приготовить сегодня</h2></div><a class="link" href="recepty.html">Все рецепты</a></div>
-      <div class="grid grid--4" id="recipes"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap split">
-      <div class="split__media"><img src="img/cordial-coupe.webp" alt="Бутылка CLAVIS и коктейль в купе" loading="lazy"></div>
-      <div>
-        <div class="eyebrow">Для дома</div>
-        <h2 style="margin-bottom:18px">Коктейльная серия для вечера с друзьями</h2>
-        <p class="lead">Wildberry Spritz, Watermelon Negroni, Special Bellini и Passion Vanilla Tiny. Наливаете основу, добавляете игристое или содовую, шейкер не нужен.</p>
-        <div class="btns" style="margin-top:26px"><a class="btn" href="dlya-doma.html">Подобрать набор</a><a class="btn btn--ghost" href="katalog.html?line=cocktail">Коктейльная серия</a></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--night">
-    <div class="wrap split split--rev">
-      <div class="split__media"><img src="img/production.webp" alt="Цех CLAVIS" loading="lazy"></div>
-      <div>
-        <div class="eyebrow">Производство и качество</div>
-        <h2 style="margin-bottom:18px">Варим сами, от фрукта до бутылки</h2>
-        <p class="lead">Собственная площадка в Подмосковье работает по ХАССП. Продукция прошла сертификацию Clean Label, натуральных ингредиентов в составе до 93%. Технологи контролируют каждый этап: фрукт, пюре, ароматику и экстракцию.</p>
-        <a class="btn btn--light" href="o-kompanii.html" style="margin-top:14px">О компании</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <div class="section-head"><div><div class="eyebrow">Журнал</div><h2>Читать за стойкой и дома</h2></div><a class="link" href="zhurnal.html">Все статьи</a></div>
-      <div class="grid grid--2" id="articles"></div>
-    </div>
-  </section>
-
-  <section class="section section--night" id="form">
+  <section class="dsec" id="form">
     <div class="wrap lead-box">
-      <div><div class="eyebrow">Заявка</div><h2 style="margin-bottom:16px">Расскажите, что вам нужно</h2><p class="lead">Менеджер ответит в течение рабочего дня. Заявка сразу попадает к тому, кто ведёт ваше направление.</p></div>
+      <div><h2 class="disp dsec__title" style="margin-bottom:18px">Напишите нам</h2><p class="lead">Менеджер ответит в течение рабочего дня. Заявка сразу попадает к тому, кто ведёт ваше направление.</p></div>
       <form class="form" data-lead="general">
         <div class="field"><label for="g-dir">Направление</label><select id="g-dir" name="direction" required><option value="venue">Я из бара, ресторана или кофейни</option><option value="distributor">Я дистрибьютор</option><option value="contract">Хочу свой продукт</option><option value="home">Покупаю домой</option><option value="general">Другой вопрос</option></select></div>
         <div class="row"><div class="field"><label for="g-name">Имя</label><input id="g-name" name="name" required autocomplete="name"></div><div class="field"><label for="g-phone">Телефон</label><input id="g-phone" name="phone" type="tel" required autocomplete="tel"></div></div>
         <div class="field"><label for="g-city">Город</label><input id="g-city" name="city" required autocomplete="address-level2"></div>
         <div data-consent></div>
-        <button class="btn btn--light" type="submit">Отправить заявку</button>
+        <button class="pill pill--solid" type="submit">Отправить заявку</button>
       </form>
     </div>
   </section>
@@ -145,64 +137,8 @@
 </div>
 
 <div data-footer></div>
-<script src="js/data.js?v=12"></script>
-<script src="js/site.js?v=12"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Первый экран: бутылка в арке меняет вкус вместе с тезисами
-  const heroIds = ['klyukva-citrus-rozmarin', 'yudzu-bambuk-lemongrass', 'roza-reven-greypfrut', 'shiso-zemlyanika-lemongrass'];
-  const heroP = heroIds.map((id) => byId(PRODUCTS, id));
-  const arch = $('#heroArch'), flavor = $('#heroFlavor');
-  arch.innerHTML = `<div class="botanic-slot"></div><div class="arch">${heroP.map((q, j) => `<img class="bottle${j ? ' is-off' : ''}" src="${q.img}" alt="${esc(q.name)}">`).join('')}</div>`;
-  const bottles = $$('.bottle', arch), archBox = $('.arch', arch);
-  let cur = -1;
-  function show(i) {
-    if (i === cur) return; cur = i;
-    const p = heroP[i];
-    $('.botanic-slot', arch).innerHTML = botanic(p.family, p.id);
-    archBox.style.setProperty('--tint', mix(p.color, '#f4efe6', .7));
-    bottles.forEach((b, j) => b.classList.toggle('is-off', j !== i));
-    flavor.textContent = p.name; flavor.href = `tovar.html?id=${p.id}`;
-    $$('.thesis').forEach((t, j) => t.classList.toggle('is-on', j === i));
-  }
-  show(0);
-  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && show(+e.target.dataset.step)), { rootMargin: '-45% 0px -45% 0px' });
-  $$('[data-step]').forEach((s) => io.observe(s));
-
-  $('#stats').innerHTML = STATS.map((s) => `<div class="stat"><b>${s.n}</b><span>${s.t}</span></div>`).join('');
-  $('#partners').innerHTML = partnersImg();
-
-  $('#lines').innerHTML = lineCards();
-
-  $('#recipes').innerHTML = RECIPES.slice(0, 4).map(recipeCard).join('');
-  $('#articles').innerHTML = ARTICLES.slice(0, 2).map(articleCard).join('');
-  $('[data-consent]').innerHTML = consentField('g-consent');
-
-  // Форма захвата: один раз за визит, после половины главной
-  const cap = $('#capture');
-  let shown = false; try { shown = sessionStorage.getItem('clavis_cap') === '1'; } catch {}
-  let timer;
-  function openCap() {
-    if (shown) return; shown = true; try { sessionStorage.setItem('clavis_cap', '1'); } catch {}
-    const p = byId(PRODUCTS, 'zhimolost-zemlyanika-smorodina');
-    $('#capVisual').innerHTML = `<div class="arch-frame">${botanic('dessert', 'cap')}<div class="arch" style="--tint:#f4efe6">${bottleEl(p)}</div></div>`;
-    cap.classList.add('is-open'); $('#c-mail').focus();
-    let left = 30; timer = setInterval(() => { left = Math.max(0, left - 1); $('#capTimer').textContent = `0:${String(left).padStart(2, '0')}`; if (!left) clearInterval(timer); }, 1000);
-  }
-  function closeCap() { cap.classList.remove('is-open'); clearInterval(timer); }
-  addEventListener('scroll', () => { if (scrollY > (document.body.scrollHeight - innerHeight) * 0.5) openCap(); }, { passive: true });
-  cap.addEventListener('click', (e) => { if (e.target === cap || e.target.closest('[data-close]')) closeCap(); });
-  addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCap(); });
-  $('#capForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const who = e.submitter?.value || 'home';
-    const leads = store.get('clavis_leads', []); leads.push({ subject: `[${who === 'pro' ? 'Заведение' : 'Дом'}] Подарок с главной`, ...Object.fromEntries(new FormData(e.target)), at: new Date().toISOString() }); store.set('clavis_leads', leads);
-    store.set('clavis_promo', 'CLAVIS5');
-    closeCap();
-    if (who === 'pro') location.href = 'zavedeniyam.html#form';
-    else { toast('Промокод CLAVIS5 уже в корзине'); setTimeout(() => (location.href = 'katalog.html'), 900); }
-  });
-});
-</script>
+<script src="js/data.js?v=13"></script>
+<script src="js/site.js?v=13"></script>
+<script src="js/home.js?v=13"></script>
 </body>
 </html>
