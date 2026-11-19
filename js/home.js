@@ -9,21 +9,32 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Звук: файлы CC0 с Freesound, подобраны по спектру под звуки ciaoenergy ---------- */
   // click: Squirrel_404 #683048, tick: SignatureSoundsOrg #872340, whoosh и pop: AudioPapkin #648541 и #649061
   const sfx = (() => {
-    let ctx, on = store.get('clavis_sound', true);
+    let on = store.get('clavis_sound', true);
+    const AC = window.AudioContext || window.webkitAudioContext;
+    // Контекст создаём сразу: браузер держит его на паузе, но файлы уже декодируются и готовы к первому жесту
+    const ctx = AC ? new AC() : null;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {} // iPhone: играть и при беззвучном режиме
     const last = {}, buf = {};
-    const load = () => ['click', 'tick', 'whoosh', 'pop'].forEach((k) => fetch(`sfx/${k}.mp3`).then((r) => r.arrayBuffer()).then((a) => ctx.decodeAudioData(a)).then((b) => { buf[k] = b; }).catch(() => {}));
+    if (ctx) ['click', 'tick', 'whoosh', 'pop'].forEach((k) => fetch(`sfx/${k}.mp3`).then((r) => r.arrayBuffer())
+      .then((a) => new Promise((ok, no) => ctx.decodeAudioData(a, ok, no))).then((b) => { buf[k] = b; }).catch(() => {}));
+    let primed = false;
     return {
       get on() { return on; },
       toggle() { on = !on; store.set('clavis_sound', on); if (on) this.unlock(); return on; },
-      unlock() { if (!on) return; if (!ctx) { ctx = new (window.AudioContext || window.webkitAudioContext)(); load(); } if (ctx.state === 'suspended') ctx.resume(); },
+      unlock() {
+        if (!ctx || !on) return;
+        if (ctx.state !== 'running') ctx.resume();
+        if (!primed) { primed = true; const s = ctx.createBufferSource(); s.buffer = ctx.createBuffer(1, 1, 22050); s.connect(ctx.destination); s.start(0); } // старый Safari открывает звук только так
+      },
       play(k, gap = 45) {
-        if (!on || !ctx || !buf[k]) return;
+        if (!on || !ctx || !buf[k] || ctx.state !== 'running') return;
         const n = performance.now(); if (n - (last[k] || 0) < gap) return; last[k] = n;
         const s = ctx.createBufferSource(); s.buffer = buf[k]; s.connect(ctx.destination); s.start();
       },
     };
   })();
-  ['pointerdown', 'keydown'].forEach((ev) => addEventListener(ev, () => sfx.unlock(), { passive: true }));
+  const buzz = (ms) => { if (sfx.on && navigator.vibrate) try { navigator.vibrate(ms); } catch {} }; // Android: лёгкий отклик пальцу
+  ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach((ev) => addEventListener(ev, () => sfx.unlock(), { passive: true, capture: true }));
   const soundBtn = $('#sound');
   const paintSound = () => { soundBtn.setAttribute('aria-pressed', sfx.on); $('#soundTxt').textContent = sfx.on ? 'ON' : 'OFF'; };
   paintSound();
@@ -36,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', (e) => { if (!e.target.closest('.hmenu')) menu.classList.remove('is-open'); });
   $$('[data-t]').forEach((a) => a.addEventListener('click', (e) => {
     e.preventDefault(); menu.classList.remove('is-open');
-    scrollTo({ top: $('#story').offsetTop + parseFloat(a.dataset.t) * innerHeight, behavior: 'smooth' });
+    scrollTo({ top: $('#story').offsetTop + parseFloat(a.dataset.t) * H, behavior: 'smooth' });
   }));
 
   /* ---------- Карусель вкусов ---------- */
@@ -57,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     i = ((i % N) + N) % N;
     if (i === act && !quiet) return;
     let d = i - act; if (d > N / 2) d -= N; if (d < -N / 2) d += N;
-    act = i; if (!quiet) { pos += d; sfx.play('tick'); }
+    act = i; if (!quiet) { pos += d; sfx.play('tick'); buzz(8); }
     const p = HERO[act];
     bigImg.src = p.img; bigImg.alt = p.name;
     big.classList.remove('is-swap'); void big.offsetWidth; big.classList.add('is-swap');
@@ -95,7 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
     wx += e.deltaX; if (Math.abs(wx) > 90) { setAct(act + Math.sign(wx)); wx = 0; }
   }, { passive: true });
   // Двойной клик открывает бутылку
-  big.addEventListener('dblclick', () => { sfx.play('pop', 400); big.classList.remove('is-pop'); void big.offsetWidth; big.classList.add('is-pop'); });
+  const popBig = () => { sfx.play('pop', 400); buzz(18); big.classList.remove('is-pop'); void big.offsetWidth; big.classList.add('is-pop'); };
+  big.addEventListener('dblclick', popBig);
+  let lastTap = 0; // iPhone не присылает dblclick, ловим двойной тап сами
+  big.addEventListener('touchend', (e) => { const n = Date.now(); if (n - lastTap < 320) { e.preventDefault(); popBig(); lastTap = 0; } else lastTap = n; });
 
   /* ---------- Преимущества ---------- */
   const ICON = {
@@ -112,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   const B0 = 1.9, BS = 1.03;
   $('#bnav').innerHTML = BEN.map((b, i) => `<button type="button" data-b="${i}" aria-label="${esc(b.title)}">${ICON[b.icon]}</button>`).join('');
-  $('#bnav').addEventListener('click', (e) => { const b = e.target.closest('[data-b]'); if (b) scrollTo({ top: $('#story').offsetTop + (B0 + (+b.dataset.b + 0.5) * BS) * innerHeight, behavior: 'smooth' }); });
+  $('#bnav').addEventListener('click', (e) => { const b = e.target.closest('[data-b]'); if (b) scrollTo({ top: $('#story').offsetTop + (B0 + (+b.dataset.b + 0.5) * BS) * H, behavior: 'smooth' }); });
   const CH = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЩЭЮЯ0123456789%';
   function scramble(el, text) {
     cancelAnimationFrame(el._r);
@@ -146,14 +160,22 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Покадровая анимация от скролла ---------- */
   // t в высотах экрана от начала истории: 0 карусель, 1 профиль вкуса, 1.9..6 преимущества, 6.7 «Сложный вкус», 7.3 три линейки
   const KF = [[0, 0, -5, 1, 0], [1, 10, 6, 1.75, -14], [1.85, 4, 30, 2.5, 10], [6, 4, -34, 2.5, 6], [6.7, 0, 0, 1.05, 8], [7.3, 0, -3, 0.82, 0], [8, 0, -3, 0.82, 0]];
+  // на телефоне бутылка по центру и выше, чтобы этикетка не уходила под текстовую плашку
+  const KFM = [[0, 0, -8, 1, 0], [1, 0, -13, 1.3, -10], [1.85, 0, -14, 1.55, 8], [6, 0, -24, 1.55, 6], [6.7, 0, 0, 1.05, 8], [7.3, 0, -3, 0.82, 0], [8, 0, -3, 0.82, 0]];
   function kf(t) {
-    for (let i = 1; i < KF.length; i++) if (t <= KF[i][0]) { const a = KF[i - 1], b = KF[i], e = ease((t - a[0]) / (b[0] - a[0])); return a.map((v, j) => v + (b[j] - v) * e); }
-    return KF[KF.length - 1];
+    const K = mobile() ? KFM : KF;
+    for (let i = 1; i < K.length; i++) if (t <= K[i][0]) { const a = K[i - 1], b = K[i], e = ease((t - a[0]) / (b[0] - a[0])); return a.map((v, j) => v + (b[j] - v) * e); }
+    return K[K.length - 1];
   }
   let T = 0, scene = 0;
   const story = $('#story'), heroUi = $('#heroUi');
+  // На телефоне адресная строка прячется и меняет innerHeight. Высоту берём только при смене ширины, иначе сцены дёргаются.
+  let H = innerHeight, lastW = innerWidth;
+  const setH = () => document.documentElement.style.setProperty('--sh', `${H}px`);
+  addEventListener('resize', () => { if (innerWidth !== lastW || !mobile()) { lastW = innerWidth; H = innerHeight; setH(); } });
+  setH();
   function frame(now) {
-    const H = innerHeight, W = innerWidth;
+    const W = innerWidth;
     T = clamp((scrollY - story.offsetTop) / H, -1, 9);
     const t = T;
     // карусель плавно доезжает до выбранного вкуса
@@ -176,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
       im.style.pointerEvents = out > 0.1 ? 'none' : 'auto';
     });
     let [, bx, by, bs, br] = kf(clamp(t, 0, 8));
-    if (mobile()) { bx = 0; bs = 1 + (bs - 1) * 0.75; by -= 15 * seg(t, 0.6, 1) * (1 - seg(t, 6, 6.7)); } // на телефоне бутылка над текстовой плашкой
     const float = t < 0.3 && !reduce ? Math.sin(fl * 1.1) * 1 : 0;
     const fadeEnd = 1 - seg(t, 8.0, 8.6);
     big.style.transform = `translate(-50%, -50%) translate(${bx}vw, ${by + float}vh) rotate(${br}deg) scale(${bs})`;
@@ -234,7 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
   addEventListener('pointerup', () => { drag = null; wave.classList.remove('is-drag'); });
   wave.addEventListener('click', (e) => { if (moved > 5) { e.preventDefault(); moved = 0; } }, true);
   let lastTick = 0;
-  wave.addEventListener('scroll', () => { if (Math.abs(wave.scrollLeft - lastTick) > 120) { lastTick = wave.scrollLeft; sfx.play('tick', 80); } }, { passive: true });
+  // на телефоне наводить нечем: подпись показывает бутылку в центре экрана
+  const touch = matchMedia('(hover: none)').matches;
+  const centerName = () => { const c = innerWidth / 2; let best, bd = 1e9; $$('a', wave).forEach((el) => { const r = el.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - c); if (d < bd) { bd = d; best = el; } }); if (best) $('#waveName').textContent = best.dataset.name; };
+  wave.addEventListener('scroll', () => {
+    if (Math.abs(wave.scrollLeft - lastTick) > 120) { lastTick = wave.scrollLeft; sfx.play('tick', 80); buzz(5); }
+    if (touch) centerName();
+  }, { passive: true });
+  if (touch) $('#waveName').textContent = 'Листайте вбок';
   drawWave();
 
   /* ---------- Остальное ---------- */
@@ -261,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = HERO[act];
     $('#capVisual').style.setProperty('--accent', mix(p.color, '#000000', 0.3));
     $('#capVisual').innerHTML = `<img src="${p.img}" alt="">`;
-    cap.classList.add('is-open'); $('#c-mail').focus(); sfx.play('whoosh');
+    cap.classList.add('is-open'); if (!mobile()) $('#c-mail').focus(); sfx.play('whoosh'); buzz(20);
     let left = 30; timer = setInterval(() => { left = Math.max(0, left - 1); $('#capTimer').textContent = `0:${String(left).padStart(2, '0')}`; if (!left) clearInterval(timer); }, 1000);
   }
   function closeCap() { cap.classList.remove('is-open'); clearInterval(timer); }
@@ -281,7 +309,12 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ---------- Загрузка ---------- */
   setAct(0, true);
   let done = 0;
-  const finish = () => { $('#loader').classList.add('is-done'); };
+  // Загрузка заканчивается кнопкой входа: нажатие разрешает браузеру звук с первой же прокрутки
+  const loader = $('#loader');
+  const finish = () => { loader.classList.add('is-ready'); $('#enter').focus({ preventScroll: true }); };
+  const enter = (snd) => { if (sfx.on !== snd) { sfx.toggle(); paintSound(); } sfx.unlock(); loader.classList.add('is-done'); setTimeout(() => sfx.play('whoosh'), 60); };
+  $('#enter').addEventListener('click', () => enter(true));
+  $('#enterMute').addEventListener('click', () => enter(false));
   HERO.forEach((p) => { const im = new Image(); im.onload = im.onerror = () => { done++; $('#loaderPct').textContent = Math.round((done / N) * 100); if (done === N) setTimeout(finish, 250); }; im.src = p.img; });
   setTimeout(finish, 3000);
   requestAnimationFrame(frame);

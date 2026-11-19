@@ -6,6 +6,11 @@
 .loader { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; align-content: center; gap: 22px; background: #000; transition: opacity .7s, visibility .7s; }
 .loader img { width: 170px; opacity: .9; }
 .loader b { font: 500 13px/1 var(--sans); letter-spacing: .2em; color: var(--dim); }
+.loader__go, .loader__mute { display: none; }
+.loader.is-ready b { display: none; }
+.loader.is-ready .loader__go { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 30px; border: 0; border-radius: 6px; background: #fff; color: #000; font: 500 14px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; cursor: pointer; box-shadow: 0 0 30px rgba(255, 255, 255, .4); animation: glow 2s ease-in-out infinite; }
+.loader.is-ready .loader__mute { display: block; justify-self: center; background: none; border: 0; color: var(--dim); font: 500 12px/1 var(--sans); text-transform: uppercase; letter-spacing: .1em; cursor: pointer; padding: 10px; }
+@keyframes glow { 50% { box-shadow: 0 0 50px rgba(255, 255, 255, .75); } }
 .loader.is-done { opacity: 0; visibility: hidden; }
 
 /* Шапка */
@@ -42,8 +47,9 @@
 .frame i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 1px 1px; } .frame i:nth-child(4) { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
 
 /* История на скролле */
-.story { height: 900vh; position: relative; }
-.stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.story { height: 900vh; height: calc(var(--sh, 100vh) * 9); position: relative; }
+.stage { position: sticky; top: 0; height: 100vh; height: var(--sh, 100svh); overflow: hidden; touch-action: pan-y; }
+.big { touch-action: manipulation; }
 .stage__bg { position: absolute; inset: 0; background: #000; transition: background .8s; }
 .letters { position: absolute; inset: 120px 9vw 90px; display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 1fr 1fr; font: 500 11px/1 var(--sans); color: rgba(255, 255, 255, .28); pointer-events: none; }
 .letters span:nth-child(n+6) { align-self: end; }
@@ -144,8 +150,11 @@
   .frame { inset: 84px 14px 14px; }
   .big { height: 46vh; }
   .ring img, .trio img { height: 36vh; }
-  .hero-ui__name { bottom: 110px; font-size: 32px; }
-  .nav-arrow--l { left: 8px; } .nav-arrow--r { right: 8px; }
+  .hero-ui__name { bottom: 112px; font-size: 28px; max-width: 88vw; }
+  .hero-ui__range { width: calc(100vw - 132px); bottom: 66px; }
+  .nav-arrow { top: auto; bottom: 55px; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .25); border-radius: 50%; }
+  .nav-arrow--l { left: 18px; } .nav-arrow--r { right: 18px; }
+  .hero-ui__hint { bottom: 22px; font-size: 10px; }
   .panel { left: 20px; right: 20px; width: auto; top: auto; bottom: 34px; translate: none; padding: 20px; background: rgba(6, 4, 12, .62); backdrop-filter: blur(8px); border-radius: 10px; }
   .panel h2 { font-size: 30px; margin-bottom: 12px; }
   .panel p { font-size: 15px; margin-bottom: 14px; }
@@ -155,7 +164,7 @@
   .doors { grid-template-columns: 1fr; }
   .door { min-height: 260px; }
   .letters { display: none; }
-  .spot { background: radial-gradient(circle at 50% 34%, transparent 0 11vh, rgba(6, 4, 12, .82) 20vh); }
+  .spot { background: radial-gradient(circle at 50% 40%, transparent 0 13vh, rgba(6, 4, 12, .82) 24vh); }
   .giant { font-size: 13vw; }
   .trio img { height: 28vh; }
   .trio-lbl { top: calc(50% + 16vh); font-size: 10px; white-space: normal; width: 28vw; text-align: center; }
@@ -183,3 +192,16 @@
 .home .capture .btn { background: #fff; color: #000; border-color: #fff; }
 .home .capture .btn--wine { background: none; color: #fff; }
 .home .capture h2 { color: #fff; font: italic 900 clamp(28px, 3vw, 40px)/1 var(--disp); text-transform: uppercase; }
+
+/* Подарок на телефоне: компактная картинка, форма сразу видна */
+@media (max-width: 760px) {
+  .home .capture { padding: 10px; align-items: end; }
+  .home .capture__box { max-height: calc(var(--sh, 100svh) - 20px); }
+  .home .capture__visual { padding: 14px; }
+  .home .capture__visual img { height: 18vh; }
+  .home .capture__copy { padding: 22px 20px 24px; }
+  .home .capture__timer { font-size: 44px; margin: 6px 0; }
+  .home .capture h2 { font-size: 24px; }
+  .home .capture .field input { font-size: 16px; }
+  .home .lead-box .field input, .home .lead-box .field select { font-size: 16px; }
+}
