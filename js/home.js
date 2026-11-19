@@ -6,40 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const seg = (t, a, b) => ease((t - a) / (b - a));
   const mobile = () => innerWidth <= 760;
 
-  /* ---------- Звук: синтез в WebAudio, без файлов ---------- */
-  // ponytail: звуки синтезированы. Если пришлют оригинальные mp3, проще заменить kinds на new Audio(file).play()
+  /* ---------- Звук: файлы CC0 с Freesound, подобраны по спектру под звуки ciaoenergy ---------- */
+  // click: Squirrel_404 #683048, tick: SignatureSoundsOrg #872340, whoosh и pop: AudioPapkin #648541 и #649061
   const sfx = (() => {
     let ctx, on = store.get('clavis_sound', true);
-    const last = {};
-    const noiseBuf = (c, dur) => { const b = c.createBuffer(1, Math.ceil(c.sampleRate * dur), c.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; return b; };
-    function tone(c, t, { type = 'sine', f0, f1, dur, vol }) {
-      const o = c.createOscillator(), g = c.createGain();
-      o.type = type; o.frequency.setValueAtTime(f0, t); if (f1) o.frequency.exponentialRampToValueAtTime(f1, t + dur);
-      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g).connect(c.destination); o.start(t); o.stop(t + dur + 0.03);
-    }
-    function noise(c, t, { dur, vol, type = 'bandpass', f0, f1, q = 1 }) {
-      const s = c.createBufferSource(), f = c.createBiquadFilter(), g = c.createGain();
-      s.buffer = noiseBuf(c, dur); f.type = type; f.Q.value = q; f.frequency.setValueAtTime(f0, t); if (f1) f.frequency.exponentialRampToValueAtTime(f1, t + dur);
-      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + dur * 0.35); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      s.connect(f).connect(g).connect(c.destination); s.start(t); s.stop(t + dur);
-    }
-    const kinds = {
-      tick: (c, t) => tone(c, t, { type: 'triangle', f0: 2600, f1: 1500, dur: 0.035, vol: 0.07 }),
-      click: (c, t) => { tone(c, t, { type: 'square', f0: 820, f1: 420, dur: 0.045, vol: 0.03 }); tone(c, t + 0.025, { f0: 1700, dur: 0.06, vol: 0.05 }); },
-      whoosh: (c, t) => noise(c, t, { dur: 0.75, vol: 0.13, f0: 220, f1: 3400, q: 0.7 }),
-      pop: (c, t) => {
-        tone(c, t, { f0: 760, f1: 85, dur: 0.1, vol: 0.5 });
-        noise(c, t, { dur: 0.07, vol: 0.3, type: 'highpass', f0: 1800 });
-        noise(c, t + 0.1, { dur: 1.4, vol: 0.05, type: 'highpass', f0: 5200 });
-        for (let i = 0; i < 28; i++) tone(c, t + 0.12 + Math.random() * 1.2, { f0: 2400 + Math.random() * 3600, f1: 1400, dur: 0.02, vol: 0.015 + Math.random() * 0.03 });
-      },
-    };
+    const last = {}, buf = {};
+    const load = () => ['click', 'tick', 'whoosh', 'pop'].forEach((k) => fetch(`sfx/${k}.mp3`).then((r) => r.arrayBuffer()).then((a) => ctx.decodeAudioData(a)).then((b) => { buf[k] = b; }).catch(() => {}));
     return {
       get on() { return on; },
       toggle() { on = !on; store.set('clavis_sound', on); if (on) this.unlock(); return on; },
-      unlock() { if (!on) return; ctx ||= new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === 'suspended') ctx.resume(); },
-      play(k, gap = 45) { if (!on || !ctx) return; const n = performance.now(); if (n - (last[k] || 0) < gap) return; last[k] = n; kinds[k](ctx, ctx.currentTime); },
+      unlock() { if (!on) return; if (!ctx) { ctx = new (window.AudioContext || window.webkitAudioContext)(); load(); } if (ctx.state === 'suspended') ctx.resume(); },
+      play(k, gap = 45) {
+        if (!on || !ctx || !buf[k]) return;
+        const n = performance.now(); if (n - (last[k] || 0) < gap) return; last[k] = n;
+        const s = ctx.createBufferSource(); s.buffer = buf[k]; s.connect(ctx.destination); s.start();
+      },
     };
   })();
   ['pointerdown', 'keydown'].forEach((ev) => addEventListener(ev, () => sfx.unlock(), { passive: true }));
@@ -76,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     i = ((i % N) + N) % N;
     if (i === act && !quiet) return;
     let d = i - act; if (d > N / 2) d -= N; if (d < -N / 2) d += N;
-    act = i; if (!quiet) { pos += d; sfx.play('tick'); sfx.play('whoosh', 300); }
+    act = i; if (!quiet) { pos += d; sfx.play('tick'); }
     const p = HERO[act];
     bigImg.src = p.img; bigImg.alt = p.name;
     big.classList.remove('is-swap'); void big.offsetWidth; big.classList.add('is-swap');
@@ -150,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const b = BEN[i];
     scramble($('#benOld'), b.old); scramble($('#benTitle'), b.title); $('#benText').textContent = b.text;
     $$('#bnav button').forEach((x, j) => x.classList.toggle('is-on', j === i));
-    sfx.play('tick'); sfx.play('whoosh', 300);
+    sfx.play('tick');
   }
 
   /* ---------- Три бутылки в финале истории ---------- */
@@ -195,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
       im.style.pointerEvents = out > 0.1 ? 'none' : 'auto';
     });
     let [, bx, by, bs, br] = kf(clamp(t, 0, 8));
-    if (mobile()) { bx = 0; bs = 1 + (bs - 1) * 0.75; }
+    if (mobile()) { bx = 0; bs = 1 + (bs - 1) * 0.75; by -= 15 * seg(t, 0.6, 1) * (1 - seg(t, 6, 6.7)); } // на телефоне бутылка над текстовой плашкой
     const float = t < 0.3 && !reduce ? Math.sin(fl * 1.1) * 1 : 0;
     const fadeEnd = 1 - seg(t, 8.0, 8.6);
     big.style.transform = `translate(-50%, -50%) translate(${bx}vw, ${by + float}vh) rotate(${br}deg) scale(${bs})`;
@@ -217,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const sd = +a.dataset.side;
       a.style.cssText = `position:absolute;inset:0;pointer-events:${tr > 0.6 ? 'auto' : 'none'};opacity:${tr * fadeEnd}`;
       const im = a.firstElementChild, lbl = a.lastElementChild;
-      const x = sd * (60 - 38 * tr) * (mobile() ? 0.62 : 1);
+      const x = sd * (mobile() ? 70 - 40 * tr : 60 - 38 * tr);
       im.style.transform = `translate(-50%, -50%) translate(${x}vw, 2vh) rotate(${sd * (14 - 8 * tr)}deg) scale(.95)`;
       lbl.style.left = `calc(50% + ${x}vw)`;
     });
@@ -225,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#trioCap').style.opacity = tr * fadeEnd;
     // смена сцены звучит переходом
     const sc = t < 0.5 ? 0 : t < 1.8 ? 1 : t < 6.2 ? 2 : t < 8 ? 3 : 4;
-    if (sc !== scene) { scene = sc; sfx.play('whoosh', 300); }
+    if (sc !== scene) { scene = sc; sfx.play('whoosh', 600); }
     $('#progress').style.width = `${clamp(scrollY / (document.documentElement.scrollHeight - H)) * 100}%`;
     requestAnimationFrame(frame);
   }
