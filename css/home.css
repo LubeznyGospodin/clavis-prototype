@@ -38,6 +38,23 @@
 @keyframes eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
 .hbar .badge { margin-left: 2px; }
 
+/* Развёрнутое меню на ПК, как на внутренних страницах */
+.hnav { display: none; }
+@media (min-width: 1081px) {
+  .hbar { grid-template-columns: auto 1fr auto auto; column-gap: 34px; }
+  .hbar__logo { order: -1; } .hbar .sound { order: 1; } .hbar__right { order: 2; }
+  .hnav { display: flex; justify-content: center; align-items: center; gap: 24px; }
+  .hnav > a, .hnav button { color: var(--fg); background: none; border: 0; padding: 6px 0; font: 500 14px/1 var(--sans); text-transform: uppercase; letter-spacing: .03em; text-decoration: none; cursor: pointer; white-space: nowrap; transition: text-shadow .2s; }
+  .hnav > a:hover, .hnav button:hover { text-shadow: 0 0 12px rgba(255, 255, 255, .8); }
+  .hbar__right .hmenu { display: none; }
+}
+.hnav__drop { position: relative; }
+.hnav__menu { position: absolute; top: calc(100% + 16px); left: -16px; width: 290px; padding: 8px; display: none; flex-direction: column; background: rgba(20, 18, 26, .92); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, .12); border-radius: 8px; }
+.hnav__drop.is-open .hnav__menu { display: flex; }
+.hnav__menu a { padding: 11px 12px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: 15px; }
+.hnav__menu a:hover { background: rgba(255, 255, 255, .08); }
+.hnav__menu small { display: block; color: var(--dim); font-size: 13px; }
+
 /* Уголки рамки */
 .frame { position: fixed; inset: 112px 58px 30px; z-index: 40; pointer-events: none; }
 .frame i { position: absolute; width: 7px; height: 7px; border: 0 solid rgba(255, 255, 255, .45); }

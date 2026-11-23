@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', (e) => { if (e.target.closest('a, button:not(#sound), summary')) sfx.play('click'); });
 
   /* ---------- Меню ---------- */
+  // Выпадашка «Для бизнеса» в развёрнутом меню на ПК
+  const drop = $('.hnav__drop');
+  $('#bizBtn').addEventListener('click', () => { const o = drop.classList.toggle('is-open'); $('#bizBtn').setAttribute('aria-expanded', o); });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.hnav__drop')) { drop.classList.remove('is-open'); $('#bizBtn').setAttribute('aria-expanded', false); } });
   const menu = $('.hmenu');
   $('#menuBtn').addEventListener('click', () => { const o = menu.classList.toggle('is-open'); $('#menuBtn').setAttribute('aria-expanded', o); document.documentElement.classList.toggle('is-locked', o && mobile()); });
   const closeMenu = () => { menu.classList.remove('is-open'); $('#menuBtn').setAttribute('aria-expanded', false); if (cap.hidden) document.documentElement.classList.remove('is-locked'); };
