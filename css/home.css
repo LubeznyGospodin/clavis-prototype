@@ -28,6 +28,7 @@
 .hmenu__list a { padding: 11px 14px; color: var(--fg); text-decoration: none; text-transform: uppercase; font-size: 15px; border-bottom: 1px solid rgba(255, 255, 255, .08); }
 .hmenu__list a:last-child { border: 0; }
 .hmenu__list .m-only { display: none; }
+.hmenu__burger { display: none; }
 .hmenu__list a:hover { background: rgba(255, 255, 255, .08); }
 .sound { justify-self: start; display: inline-flex; align-items: center; gap: 10px; background: none; border: 0; color: var(--fg); font: 500 14px/1 var(--sans); cursor: pointer; padding: 6px 0; }
 .sound__bars { display: inline-flex; gap: 2px; align-items: center; height: 10px; }
@@ -173,6 +174,22 @@
   .wave { height: 52vh; min-height: 360px; padding: 0 20px 7vh; gap: 14px; scroll-snap-type: x mandatory; }
   .wave img { height: 36vh; min-height: 240px; }
   .hmenu__list .m-only { display: block; }
+  /* Шапка главной на телефоне: логотип и бургер, всё остальное в меню на весь экран */
+  .hbar { grid-template-columns: 1fr auto; }
+  .hbar .sound { display: none; }
+  .hbar__logo { justify-self: start; }
+  .hmenu { position: static; }
+  .hmenu__dots, .hmenu__txt { display: none; }
+  .hmenu__btn { position: relative; z-index: 3; width: 44px; height: 44px; justify-content: center; }
+  .hmenu__burger { display: grid; gap: 6px; width: 24px; }
+  .hmenu__burger i { display: block; height: 2px; background: currentColor; border-radius: 2px; transition: transform .3s, opacity .3s; }
+  .hmenu.is-open .hmenu__burger i:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .hmenu.is-open .hmenu__burger i:nth-child(2) { opacity: 0; }
+  .hmenu.is-open .hmenu__burger i:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+  .hmenu__list { position: fixed; inset: 0; z-index: 2; min-width: 0; padding: 96px 22px 32px; border: 0; border-radius: 0; background: rgba(7, 6, 10, .97); overflow: auto; }
+  .hmenu__list a { padding: 13px 0; font: italic 900 26px/1.05 var(--disp); }
+  .hmenu__sound { align-self: start; margin-bottom: 14px; padding: 10px 16px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 999px; background: none; color: var(--fg); font: 500 13px/1 var(--sans); text-transform: uppercase; letter-spacing: .06em; cursor: pointer; }
+  .hmenu__sound b { margin-left: 6px; }
 }
 @media (prefers-reduced-motion: reduce) { .sound__bars i { animation: none; } .big.is-pop { animation: none; } }
 .big.is-swap img { animation: swap .45s cubic-bezier(.2, .8, .2, 1); }

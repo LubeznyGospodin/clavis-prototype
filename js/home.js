@@ -36,15 +36,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const buzz = (ms) => { if (sfx.on && navigator.vibrate) try { navigator.vibrate(ms); } catch {} }; // Android: лёгкий отклик пальцу
   ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach((ev) => addEventListener(ev, () => sfx.unlock(), { passive: true, capture: true }));
   const soundBtn = $('#sound');
-  const paintSound = () => { soundBtn.setAttribute('aria-pressed', sfx.on); $('#soundTxt').textContent = sfx.on ? 'ON' : 'OFF'; };
+  const paintSound = () => { soundBtn.setAttribute('aria-pressed', sfx.on); $('#soundTxt').textContent = $('#soundM b').textContent = sfx.on ? 'ON' : 'OFF'; };
   paintSound();
   soundBtn.addEventListener('click', () => { sfx.toggle(); paintSound(); sfx.play('click'); });
+  $('#soundM').addEventListener('click', () => { sfx.toggle(); paintSound(); sfx.play('click'); }); // на телефоне звук живёт в меню
   document.addEventListener('click', (e) => { if (e.target.closest('a, button:not(#sound), summary')) sfx.play('click'); });
 
   /* ---------- Меню ---------- */
   const menu = $('.hmenu');
-  $('#menuBtn').addEventListener('click', () => { const o = menu.classList.toggle('is-open'); $('#menuBtn').setAttribute('aria-expanded', o); });
-  document.addEventListener('click', (e) => { if (!e.target.closest('.hmenu')) menu.classList.remove('is-open'); });
+  $('#menuBtn').addEventListener('click', () => { const o = menu.classList.toggle('is-open'); $('#menuBtn').setAttribute('aria-expanded', o); document.documentElement.classList.toggle('is-locked', o && mobile()); });
+  const closeMenu = () => { menu.classList.remove('is-open'); $('#menuBtn').setAttribute('aria-expanded', false); if (cap.hidden) document.documentElement.classList.remove('is-locked'); };
+  document.addEventListener('click', (e) => { if (!e.target.closest('.hmenu') || e.target.closest('.hmenu__list a')) closeMenu(); });
   $$('[data-t]').forEach((a) => a.addEventListener('click', (e) => {
     e.preventDefault(); menu.classList.remove('is-open');
     scrollTo({ top: $('#story').offsetTop + parseFloat(a.dataset.t) * H, behavior: 'smooth' });
