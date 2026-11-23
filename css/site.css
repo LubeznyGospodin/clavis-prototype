@@ -507,8 +507,8 @@ p { margin: 0 0 1em; }
 
 /* Ролик из Instagram */
 .reel { width: min(380px, 100%); margin: 0 auto; border-radius: 18px; overflow: hidden; background: #000; box-shadow: 0 30px 60px rgba(0, 0, 0, .35); }
-.reel iframe { display: block; width: 100%; height: 680px; border: 0; }
-@media (max-width: 760px) { .reel { margin-top: 28px; } .reel iframe { height: 620px; } }
+.reel video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: cover; background: #000; }
+@media (max-width: 760px) { .reel { margin-top: 28px; } }
 
 /* Схема пути продукта: светящаяся линия и узлы зигзагом */
 .flow { position: relative; display: grid; gap: 26px; padding: 10px 0; counter-reset: f; }
@@ -539,3 +539,5 @@ p { margin: 0 0 1em; }
   .flow__fork .flow__node::after { content: ''; position: absolute; top: 30px; left: -26px; width: 14px; height: 14px; border-radius: 50%; background: var(--wine); box-shadow: 0 0 20px var(--wine); }
   .flow__node--end { text-align: left; }
 }
+.dark .entry__img { background: #17151b; }
+.dark .fc__row input:not(.fc__name), .dark .fc__row .fc__name:not([readonly]) { background: #17151b; }

@@ -15,7 +15,9 @@
 .hbar__progress i { position: absolute; left: 0; top: 0; height: 1px; width: 0; background: linear-gradient(90deg, rgba(255, 255, 255, .5), #fff); box-shadow: 0 0 10px 1px #fff; }
 .hbar__logo img { width: 128px; display: block; }
 .hbar__right { justify-self: end; display: flex; align-items: center; gap: 22px; }
-.hbar__cart, .hmenu__btn { color: var(--fg); background: none; border: 0; font: 500 14px/1 var(--sans); text-transform: uppercase; letter-spacing: .03em; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+.hbar__cart, .hmenu__btn { color: var(--fg); background: none; border: 0; font: 500 14px/1 var(--sans); text-transform: uppercase; letter-spacing: .03em; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0; margin: 0; vertical-align: middle; }
+.hmenu { display: flex; align-items: center; }
+.hbar__cta { display: inline-flex; align-items: center; height: 40px; padding-top: 0; padding-bottom: 0; }
 .hbar__cta { background: #fff; color: #000; text-decoration: none; text-transform: uppercase; font: 500 14px/1 var(--sans); padding: 12px 18px; border-radius: 6px; box-shadow: 0 0 22px rgba(255, 255, 255, .35); transition: box-shadow .3s; }
 .hbar__cta:hover { box-shadow: 0 0 34px rgba(255, 255, 255, .7); }
 .hmenu { position: relative; }
@@ -99,11 +101,11 @@
 .lineup__chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .lineup__chips button { background: none; border: 1px solid rgba(255, 255, 255, .25); color: #fff; border-radius: 999px; padding: 9px 14px; font: 500 13px/1 var(--sans); text-transform: uppercase; cursor: pointer; }
 .lineup__chips button.is-on { background: #fff; color: #000; }
-.wave { display: flex; align-items: flex-end; gap: clamp(18px, 2.4vw, 40px); height: 64vh; min-height: 420px; padding: 0 calc(50vw - 60px) 8vh; overflow-x: auto; scrollbar-width: none; cursor: grab; outline: none; scroll-snap-type: x proximity; }
+.wave { display: flex; align-items: flex-end; gap: clamp(18px, 2.4vw, 40px); height: 64vh; min-height: 420px; padding: 0 6vw 8vh; overflow-x: auto; scrollbar-width: none; cursor: grab; outline: none; scroll-snap-type: x proximity; }
 .wave::-webkit-scrollbar { display: none; }
 .wave.is-drag { cursor: grabbing; scroll-snap-type: none; }
 /* --k от 0 до 1: насколько бутылка близко к центру */
-.wave a { --k: 0; flex: 0 0 auto; display: block; scroll-snap-align: center; transform-origin: 50% 100%; transform: scale(calc(.78 + var(--k) * .22)); filter: brightness(calc(.45 + var(--k) * .6)); transition: transform .25s ease-out, filter .25s; -webkit-box-reflect: below 2px linear-gradient(transparent 72%, rgba(255, 255, 255, .16)); }
+.wave a { --k: 0; flex: 0 0 auto; display: block; scroll-snap-align: center; transform-origin: 50% 100%; transform: scale(calc(.88 + var(--k) * .12)); filter: brightness(calc(.72 + var(--k) * .38)); transition: transform .25s ease-out, filter .25s; -webkit-box-reflect: below 2px linear-gradient(transparent 72%, rgba(255, 255, 255, .16)); }
 .wave a:hover, .wave a:focus-visible { filter: brightness(1.1); }
 .wave img { height: 44vh; min-height: 280px; width: auto; display: block; pointer-events: none; filter: drop-shadow(0 18px 18px rgba(0, 0, 0, .6)); }
 .lineup__foot { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
@@ -168,7 +170,7 @@
   .lineup { padding-top: 110px; }
   .lineup__chips { flex-wrap: nowrap; overflow-x: auto; margin: 0 -20px; padding: 0 20px; scrollbar-width: none; }
   .lineup__chips button { flex: 0 0 auto; }
-  .wave { height: 52vh; min-height: 360px; padding: 0 calc(50vw - 44px) 7vh; gap: 14px; scroll-snap-type: x mandatory; }
+  .wave { height: 52vh; min-height: 360px; padding: 0 20px 7vh; gap: 14px; scroll-snap-type: x mandatory; }
   .wave img { height: 36vh; min-height: 240px; }
   .hmenu__list .m-only { display: block; }
 }
