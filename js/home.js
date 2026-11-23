@@ -239,11 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function drawWave() {
     const lines = LINES.filter((l) => withImg.some((p) => p.line === l.id));
     $('#lineChips').innerHTML = [['', 'Все'], ...lines.map((l) => [l.id, l.name])].map(([id, n]) => `<button type="button" data-wl="${id}" class="${id === wl ? 'is-on' : ''}">${n}</button>`).join('');
-    wave.innerHTML = withImg.filter((p) => !wl || p.line === wl).map((p, i) => {
-      const y = Math.sin(i * 0.55) * 6, r = Math.sin(i * 0.9) * 8;
-      return `<a href="tovar.html?id=${p.id}" style="--y:${y}vh;transform:translateY(${y}vh) rotate(${r}deg)" data-name="${esc(p.name)}"><img src="${p.img}" alt="${esc(p.name)}" loading="lazy"></a>`;
-    }).join('');
-    wave.scrollLeft = 0;
+    wave.innerHTML = withImg.filter((p) => !wl || p.line === wl).map((p) => `<a href="tovar.html?id=${p.id}" data-name="${esc(p.name)}"><img src="${p.img}" alt="${esc(p.name)}" loading="lazy"></a>`).join('');
+    wave.scrollLeft = 0; requestAnimationFrame(shelf);
   }
   $('#lineChips').addEventListener('click', (e) => { const b = e.target.closest('[data-wl]'); if (b) { wl = b.dataset.wl; drawWave(); } });
   const named = (e) => { const a = e.target.closest('a[data-name]'); if (a) { $('#waveName').textContent = a.dataset.name; sfx.play('tick', 60); } };
@@ -255,13 +252,22 @@ document.addEventListener('DOMContentLoaded', () => {
   addEventListener('pointerup', () => { drag = null; wave.classList.remove('is-drag'); });
   wave.addEventListener('click', (e) => { if (moved > 5) { e.preventDefault(); moved = 0; } }, true);
   let lastTick = 0;
-  // на телефоне наводить нечем: подпись показывает бутылку в центре экрана
+  // Полка: бутылки стоят ровно, ближняя к центру крупнее и ярче. На телефоне подпись показывает центральную.
   const touch = matchMedia('(hover: none)').matches;
-  const centerName = () => { const c = innerWidth / 2; let best, bd = 1e9; $$('a', wave).forEach((el) => { const r = el.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - c); if (d < bd) { bd = d; best = el; } }); if (best) $('#waveName').textContent = best.dataset.name; };
+  function shelf() {
+    const c = innerWidth / 2; let best, bd = 1e9;
+    $$('a', wave).forEach((el) => {
+      const r = el.getBoundingClientRect(), d = Math.abs(r.left + r.width / 2 - c);
+      el.style.setProperty('--k', clamp(1 - d / (innerWidth * 0.45)).toFixed(3));
+      if (d < bd) { bd = d; best = el; }
+    });
+    if (touch && best) $('#waveName').textContent = best.dataset.name;
+  }
   wave.addEventListener('scroll', () => {
     if (Math.abs(wave.scrollLeft - lastTick) > 120) { lastTick = wave.scrollLeft; sfx.play('tick', 80); buzz(5); }
-    if (touch) centerName();
+    shelf();
   }, { passive: true });
+  addEventListener('resize', shelf);
   if (touch) $('#waveName').textContent = 'Листайте вбок';
   drawWave();
 
@@ -280,30 +286,41 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
   $('#faqs').innerHTML = FAQ.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join('');
 
-  // Форма захвата: один раз за визит, когда гость пролистал историю и линейку
+  // Мистический подарок: один раз за визит, когда гость пролистал историю и линейку. Сайт под окном не листается.
   const cap = $('#capture');
   let shown = false; try { shown = sessionStorage.getItem('clavis_cap') === '1'; } catch {}
-  let timer;
+  let timer, tried = '';
+  const step = (n) => $$('.gift__step', cap).forEach((el) => el.classList.toggle('is-on', el.dataset.step === n));
   function openCap() {
     if (shown) return; shown = true; try { sessionStorage.setItem('clavis_cap', '1'); } catch {}
-    const p = HERO[act];
-    $('#capVisual').style.setProperty('--accent', mix(p.color, '#000000', 0.3));
-    $('#capVisual').innerHTML = `<img src="${p.img}" alt="">`;
-    cap.classList.add('is-open'); if (!mobile()) $('#c-mail').focus(); sfx.play('whoosh'); buzz(20);
-    let left = 30; timer = setInterval(() => { left = Math.max(0, left - 1); $('#capTimer').textContent = `0:${String(left).padStart(2, '0')}`; if (!left) clearInterval(timer); }, 1000);
+    step('ask'); cap.hidden = false; requestAnimationFrame(() => cap.classList.add('is-open'));
+    document.documentElement.classList.add('is-locked');
+    sfx.play('whoosh'); buzz(20);
+    let left = 30; $('#capTimer').textContent = '0:30';
+    timer = setInterval(() => {
+      left--; $('#capTimer').textContent = `0:${String(Math.max(left, 0)).padStart(2, '0')}`;
+      if (left <= 0) { clearInterval(timer); step('burn'); sfx.play('pop'); setTimeout(closeCap, 3200); }
+    }, 1000);
   }
-  function closeCap() { cap.classList.remove('is-open'); clearInterval(timer); }
+  function closeCap() {
+    clearInterval(timer); cap.classList.remove('is-open'); document.documentElement.classList.remove('is-locked');
+    setTimeout(() => { cap.hidden = true; }, 400);
+  }
   addEventListener('scroll', () => { if (scrollY > $('#who').offsetTop) openCap(); }, { passive: true });
-  cap.addEventListener('click', (e) => { if (e.target === cap || e.target.closest('[data-close]')) closeCap(); });
-  addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCap(); });
+  cap.addEventListener('click', (e) => {
+    if (e.target.closest('[data-close]')) return closeCap();
+    const go = e.target.closest('[data-go]');
+    if (go) { tried = go.dataset.go; clearInterval(timer); step('form'); if (!mobile()) cap.querySelector('[name=email]').focus(); } // ответил: таймер больше не торопит
+  });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !cap.hidden) closeCap(); });
   $('#capForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const who = e.submitter?.value || 'home';
-    const leads = store.get('clavis_leads', []); leads.push({ subject: `[${who === 'pro' ? 'Заведение' : 'Дом'}] Подарок с главной`, ...Object.fromEntries(new FormData(e.target)), at: new Date().toISOString() }); store.set('clavis_leads', leads);
-    store.set('clavis_promo', 'CLAVIS5');
-    closeCap();
-    if (who === 'pro') location.href = 'zavedeniyam.html#form';
-    else { toast('Промокод CLAVIS5 уже в корзине'); setTimeout(() => (location.href = 'katalog.html'), 900); }
+    const leads = store.get('clavis_leads', []);
+    leads.push({ subject: `[${who === 'pro' ? 'Заведение' : 'Дом'}] Мистический подарок с главной`, tried: tried === 'love' ? 'уже пробовал' : 'ещё не пробовал', ...Object.fromEntries(new FormData(e.target)), at: new Date().toISOString() });
+    store.set('clavis_leads', leads); store.set('clavis_promo', 'CLAVIS5');
+    step('win'); sfx.play('pop'); buzz(30);
+    setTimeout(() => { closeCap(); location.href = who === 'pro' ? 'zavedeniyam.html#form' : 'katalog.html'; }, 2200);
   });
 
   /* ---------- Загрузка ---------- */

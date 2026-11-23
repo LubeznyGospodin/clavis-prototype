@@ -420,3 +420,122 @@ p { margin: 0 0 1em; }
 .catbar.is-stuck .fbar__search { min-height: 38px; }
 .catbar.is-stuck .chip { padding: 5px 12px; }
 @media (max-width: 1080px) { .catbar { top: 72px; } }
+
+/* Шапка на телефоне уезжает вместе со страницей. Открытое меню прижимает её к верху. */
+@media (max-width: 760px) {
+  .top { position: relative; }
+  html.menu-open .top { position: fixed; left: 0; right: 0; top: 0; }
+  html.menu-open body { overflow: hidden; }
+  .catbar, .catbar.is-stuck { position: static; box-shadow: none; padding: 0; margin: 0 0 24px; }
+}
+/* На десктопе прилипшая панель каталога не закрывает товары: параметры прокручиваются внутри */
+.catbar.is-stuck .fbar__params { max-height: 52vh; overflow: auto; }
+
+/* Тёмная тема в айдентике главной: каталог, магазин, карточка товара, корзина */
+.dark {
+  --cream: #07060a; --paper: #121016; --ink: #f3efe9; --muted: #8c8794; --line: rgba(255, 255, 255, .12);
+  --wine: #ec5a78; --wine-deep: #d4455f; --night: #000; --disp: 'Inter Tight', 'Manrope', sans-serif;
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, #1d1420 0%, #07060a 60%) fixed, #07060a;
+}
+.dark h1, .dark h2 { font-family: var(--disp); font-style: italic; font-weight: 900; text-transform: uppercase; line-height: .92; letter-spacing: -.01em; }
+.dark h3, .dark .product__name, .dark .seg__tile b { font-family: var(--sans); font-weight: 600; }
+.dark .product__name { font-size: 17px; line-height: 1.25; }
+.dark .top { background: rgba(7, 6, 10, .82); }
+.dark .mnav { background: #07060a; }
+.dark .mnav a { font-family: var(--disp); font-style: italic; font-weight: 900; text-transform: uppercase; font-size: 24px; }
+.dark .btn { background: #fff; color: #000; border-color: #fff; }
+.dark .btn:hover { background: transparent; color: #fff; box-shadow: 0 0 22px rgba(255, 255, 255, .3); }
+.dark .btn--wine, .dark .mnav .btn { background: var(--wine); border-color: var(--wine); color: #fff; }
+.dark .btn--ghost { background: transparent; color: #fff; }
+.dark .fbar__search, .dark .field input, .dark .field select, .dark .field textarea, .dark .radio { background: #17151b; color: #fff; border-color: var(--line); }
+.dark .fbar__search input { color: #fff; }
+.dark .chip.is-on, .dark .seg__tile.is-on { background: #fff; color: #000; border-color: #fff; }
+.dark .seg__tile.is-on span { color: #555; }
+.dark .seg__tile--new { background: var(--wine); color: #fff; border-color: var(--wine); }
+.dark .catbar { background: rgba(7, 6, 10, .94); backdrop-filter: blur(10px); }
+/* Арка: вместо светлой подложки с ветками свечение цвета вкуса, как сцена на главной */
+.dark .botanic { display: none; }
+.dark .arch { background: radial-gradient(ellipse 70% 55% at 50% 88%, color-mix(in srgb, var(--tint, #444) 55%, #000) 0%, #0d0b10 72%); border: 1px solid rgba(255, 255, 255, .06); }
+.dark .arch img.bottle { filter: drop-shadow(0 22px 22px rgba(0, 0, 0, .6)); }
+.dark .pbadge { background: var(--wine); }
+.dark .section--paper { background: #0d0b10; }
+.dark .card, .dark .entry, .dark .quiz { background: #121016; }
+.product__meta b { white-space: nowrap; }
+
+/* Калькулятор фудкоста для заведений */
+.fc { display: grid; gap: 26px; }
+.fc__head { display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; }
+.fc__head > div:first-child { max-width: 560px; }
+.fc__presets { display: flex; gap: 8px; flex-wrap: wrap; }
+.fc__grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; align-items: start; }
+.fc__row { display: grid; grid-template-columns: 1.3fr 1fr 1.1fr 72px 28px; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.fc__row--head { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 0; }
+.fc__row input, .fc__row select { width: 100%; min-height: 42px; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: #fff; font: inherit; font-size: 15px; color: inherit; }
+.fc__row select { border: 0; padding: 0; min-height: 0; background: none; font-size: 13px; color: var(--muted); width: auto; }
+.fc__row--clavis .fc__name { background: var(--wine); color: #fff; border-color: var(--wine); font-weight: 600; }
+.fc__num { position: relative; display: grid; grid-template-columns: 1fr; }
+.fc__num em { font-style: normal; font-size: 12px; color: var(--muted); margin-top: 3px; }
+.fc__cost { text-align: right; font-weight: 600; white-space: nowrap; }
+.fc__del { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--line); background: none; cursor: pointer; color: var(--muted); }
+.fc__del:hover { color: var(--wine); border-color: var(--wine); }
+.fc__add { margin-top: 12px; background: none; border: 1px dashed var(--line); border-radius: 999px; padding: 10px 18px; cursor: pointer; font: inherit; font-size: 14px; color: var(--ink); }
+.fc__add:hover { border-color: var(--ink); }
+.fc__out { background: var(--cream); border-radius: var(--radius); padding: 22px; display: grid; gap: 16px; }
+.fc__big b { display: block; font: 500 54px/1 var(--serif); color: var(--wine); }
+.fc__big span, .fc__pair span { font-size: 14px; color: var(--muted); }
+.fc__pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fc__pair b { display: block; font: 500 32px/1 var(--serif); }
+.fc__bar { height: 8px; border-radius: 8px; background: var(--line); overflow: hidden; }
+.fc__bar i { display: block; height: 100%; width: 0; border-radius: 8px; background: var(--ok); transition: width .3s, background .3s; }
+.fc__bar i[data-level="mid"] { background: var(--gold); }
+.fc__bar i[data-level="high"] { background: var(--wine); }
+.fc__note { margin: 0; font-size: 14px; color: var(--muted); }
+@media (max-width: 980px) { .fc__grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) {
+  .fc__row--head { display: none; }
+  .fc__row { grid-template-columns: 1fr 1fr 28px; grid-template-areas: "name name del" "dose price cost"; row-gap: 8px; padding: 12px 0; }
+  .fc__row .fc__name { grid-area: name; }
+  .fc__row > .fc__num:nth-of-type(1) { grid-area: dose; }
+  .fc__row > .fc__num:nth-of-type(2) { grid-area: price; }
+  .fc__row .fc__cost { grid-area: cost; grid-column: 3; text-align: right; }
+  .fc__row .fc__del, .fc__row > span { grid-area: del; }
+  .fc__row { grid-template-columns: 1fr 1fr 64px; grid-template-areas: "name name del" "dose price cost"; }
+}
+.fc__row > *, .fc__num input { min-width: 0; }
+@media (max-width: 640px) { .fc.card { padding: 20px 16px; } .fc__out { padding: 18px; } }
+.fc__grid > *, .fc > * { min-width: 0; }
+
+/* Ролик из Instagram */
+.reel { width: min(380px, 100%); margin: 0 auto; border-radius: 18px; overflow: hidden; background: #000; box-shadow: 0 30px 60px rgba(0, 0, 0, .35); }
+.reel iframe { display: block; width: 100%; height: 680px; border: 0; }
+@media (max-width: 760px) { .reel { margin-top: 28px; } .reel iframe { height: 620px; } }
+
+/* Схема пути продукта: светящаяся линия и узлы зигзагом */
+.flow { position: relative; display: grid; gap: 26px; padding: 10px 0; counter-reset: f; }
+.flow::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; translate: -50% 0; background: linear-gradient(180deg, transparent, var(--wine) 8%, var(--wine) 92%, transparent); box-shadow: 0 0 18px var(--wine); }
+.flow__fork { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; position: relative; }
+.flow__node { position: relative; width: calc(50% - 40px); padding: 24px 26px; border-radius: 18px; background: var(--paper); border: 1px solid var(--line); }
+.flow__fork .flow__node { width: auto; }
+.flow > .flow__node:nth-of-type(even) { justify-self: start; }
+.flow > .flow__node:nth-of-type(odd) { justify-self: end; }
+.flow > .flow__node::after { content: ''; position: absolute; top: 34px; width: 14px; height: 14px; border-radius: 50%; background: var(--wine); box-shadow: 0 0 0 5px color-mix(in srgb, var(--wine) 25%, transparent), 0 0 20px var(--wine); }
+.flow > .flow__node:nth-of-type(even)::after { right: -47px; }
+.flow > .flow__node:nth-of-type(odd)::after { left: -47px; }
+.flow__n { display: inline-block; margin-bottom: 10px; font: 600 12px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--wine); }
+.flow__node h3 { margin-bottom: 8px; font-size: 24px; }
+.flow__node p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.55; }
+.flow__node--start { border-color: var(--wine); }
+.flow__node--end { justify-self: center !important; width: min(420px, 100%); text-align: center; background: var(--wine); border-color: var(--wine); color: #fff; }
+.flow__node--end .flow__n { color: rgba(255, 255, 255, .8); }
+.flow__node--end::after { display: none; }
+.flow__node--end .btn { margin-top: 12px; background: #fff; color: #000; border-color: #fff; }
+.dark .flow__node h3 { font-family: var(--disp); font-style: italic; font-weight: 900; text-transform: uppercase; font-size: 22px; line-height: 1; }
+@media (max-width: 760px) {
+  .flow { padding-left: 26px; }
+  .flow::before { left: 7px; translate: none; }
+  .flow__fork { grid-template-columns: 1fr; gap: 14px; }
+  .flow__node, .flow__node--end { width: auto; justify-self: stretch !important; }
+  .flow > .flow__node:nth-of-type(odd)::after, .flow > .flow__node:nth-of-type(even)::after { left: -26px; right: auto; }
+  .flow__fork .flow__node::after { content: ''; position: absolute; top: 30px; left: -26px; width: 14px; height: 14px; border-radius: 50%; background: var(--wine); box-shadow: 0 0 20px var(--wine); }
+  .flow__node--end { text-align: left; }
+}

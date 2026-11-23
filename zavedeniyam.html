@@ -8,7 +8,7 @@
 <meta name="description" content="Бесплатно проработаем меню вашего бара с ведущими миксологами страны. Напиток за минуту, порция дешевле на 30–50%.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=12">
+<link rel="stylesheet" href="css/site.css?v=23">
 </head>
 <body class="has-sticky">
 <div data-header></div>
@@ -43,16 +43,29 @@
         <div class="stat"><b>+31%</b><span>средний чек по напиткам</span></div>
         <div class="stat"><b>15–40</b><span>порций из бутылки</span></div>
       </div>
-      <div class="calc card">
-        <div>
-          <h3 style="margin-bottom:8px">Посчитайте свою порцию</h3>
-          <p class="muted">Двигайте ползунок закладки, сайт пересчитает выход и себестоимость.</p>
-          <div class="field" style="margin-top:20px"><label for="dose">Закладка основы: <b id="doseV">30</b> мл</label><input id="dose" type="range" min="15" max="60" step="5" value="30"></div>
-          <div class="field" style="margin-top:14px"><label for="bprice">Цена бутылки 0,75 л, ₽</label><input id="bprice" type="number" min="100" step="10" value="800"></div>
+      <div class="fc card" id="fc">
+        <div class="fc__head">
+          <div><h3 style="margin-bottom:8px">Фудкост напитка с CLAVIS</h3>
+          <p class="muted" style="margin:0">Выберите напиток или соберите свой. Впишите закладку и цены вашего бара, калькулятор посчитает себестоимость порции и долю фудкоста в цене.</p></div>
+          <div class="fc__presets" id="fcPresets"></div>
         </div>
-        <div>
-          <div class="calc__out"><div><b id="outN">25</b><span>порций из бутылки</span></div><div><b id="outC">32 ₽</b><span>основа в одной порции</span></div></div>
-          <a class="btn btn--ghost" href="#form" style="margin-top:16px;width:100%">Получить расчёт по вашей карте</a>
+        <div class="fc__grid">
+          <div>
+            <div class="fc__row fc__row--head"><span>Ингредиент</span><span>Закладка</span><span>Цена закупки</span><span>В порции</span><span></span></div>
+            <div id="fcRows"></div>
+            <button type="button" class="fc__add" id="fcAdd">+ Добавить ингредиент</button>
+          </div>
+          <div class="fc__out">
+            <div class="field"><label for="fcPrice">Цена напитка в меню, ₽</label><input id="fcPrice" type="number" min="0" step="10" value="550" inputmode="numeric"></div>
+            <div class="fc__big"><b id="fcCost">0 ₽</b><span>себестоимость порции</span></div>
+            <div class="fc__pair">
+              <div><b id="fcPct">0%</b><span>фудкост</span></div>
+              <div><b id="fcMargin">0 ₽</b><span>остаётся бару</span></div>
+            </div>
+            <div class="fc__bar"><i id="fcBar"></i></div>
+            <p class="fc__note" id="fcNote"></p>
+            <a class="btn btn--ghost" href="#form" style="width:100%">Получить расчёт по вашей карте</a>
+          </div>
         </div>
       </div>
     </div>
@@ -95,19 +108,67 @@
 </main>
 <div class="sticky-cta"><a class="btn btn--wine" href="#form">Заказать дегустацию</a></div>
 <div data-footer></div>
-<script src="js/data.js?v=12"></script>
-<script src="js/site.js?v=12"></script>
+<script src="js/data.js?v=23"></script>
+<script src="js/site.js?v=23"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   $('[data-consent]').innerHTML = consentField('v-consent');
   $('#partners').innerHTML = partnersImg();
   const s = tasting.all();
   $('#setList').innerHTML = s.length ? s.map((id) => `<span class="tag">${esc(byId(PRODUCTS, id).name)}</span>`).join('') : '<span class="muted" style="font-size:14px">Сет пока пуст. Добавьте вкусы кнопкой «Добавить в дегустацию» в <a href="katalog.html">каталоге</a> или оставьте выбор миксологу.</span>';
-  const calc = () => {
-    const dose = +$('#dose').value, price = +$('#bprice').value || 0, n = Math.floor(750 / dose);
-    $('#doseV').textContent = dose; $('#outN').textContent = n; $('#outC').textContent = rub(Math.round(price / n));
+  // Калькулятор фудкоста: основа CLAVIS считается от цены бутылки 0,75 л, остальное от цены за литр, килограмм или штуку
+  const UNIT = { ml: ['мл', '₽/л', 1000], g: ['г', '₽/кг', 1000], pcs: ['шт', '₽/шт', 1] };
+  const PRESETS = {
+    highball: ['Хайбол с джином', 550, [['clavis', 'Основа CLAVIS', 30, 'ml', 800], ['', 'Джин', 40, 'ml', 2000], ['', 'Тоник', 120, 'ml', 180], ['', 'Лёд', 150, 'g', 40], ['', 'Цедра или веточка', 1, 'pcs', 12]]],
+    lemonade: ['Лимонад', 390, [['clavis', 'Основа CLAVIS', 40, 'ml', 800], ['', 'Содовая', 220, 'ml', 90], ['', 'Лёд', 150, 'g', 40], ['', 'Долька цитруса', 1, 'pcs', 8]]],
+    spritz: ['Спритц', 620, [['clavis', 'Основа CLAVIS', 30, 'ml', 800], ['', 'Игристое', 90, 'ml', 1300], ['', 'Содовая', 60, 'ml', 90], ['', 'Лёд', 120, 'g', 40], ['', 'Апельсин', 1, 'pcs', 10]]],
+    tea: ['Чай с основой', 320, [['clavis', 'Основа CLAVIS', 30, 'ml', 800], ['', 'Чай', 5, 'g', 2500], ['', 'Ягоды для подачи', 10, 'g', 900]]],
   };
-  $('#dose').addEventListener('input', calc); $('#bprice').addEventListener('input', calc); calc();
+  let preset = 'highball';
+  $('#fcPresets').innerHTML = Object.entries(PRESETS).map(([k, [t]]) => `<button type="button" class="chip" data-p="${k}">${t}</button>`).join('');
+  const row = ([kind, name, dose, unit, price]) => {
+    const cl = kind === 'clavis';
+    return `<div class="fc__row${cl ? ' fc__row--clavis' : ''}" data-unit="${unit}" data-kind="${kind}">
+      <input class="fc__name" value="${esc(name)}" aria-label="Ингредиент"${cl ? ' readonly' : ''}>
+      <label class="fc__num"><input type="number" min="0" step="any" value="${dose}" data-f="dose" aria-label="Закладка"><em>${cl ? 'мл' : `<select data-f="unit" aria-label="Единица">${Object.entries(UNIT).map(([u, [t]]) => `<option value="${u}"${u === unit ? ' selected' : ''}>${t}</option>`).join('')}</select>`}</em></label>
+      <label class="fc__num"><input type="number" min="0" step="any" value="${price}" data-f="price" aria-label="Цена закупки"><em>${cl ? '₽ за 0,75 л' : UNIT[unit][1]}</em></label>
+      <b class="fc__cost">0 ₽</b>
+      ${cl ? '<span></span>' : '<button type="button" class="fc__del" aria-label="Убрать ингредиент">×</button>'}
+    </div>`;
+  };
+  const r2 = (n) => (Math.round(n * 10) / 10).toLocaleString('ru-RU') + ' ₽';
+  function fcLoad(k) {
+    preset = k; const [, price, rows] = PRESETS[k];
+    $('#fcPrice').value = price; $('#fcRows').innerHTML = rows.map(row).join('');
+    $$('#fcPresets .chip').forEach((b) => b.classList.toggle('is-on', b.dataset.p === k)); fc();
+  }
+  function fc() {
+    let total = 0, base = 0, baseDose = 0;
+    $$('#fcRows .fc__row').forEach((r) => {
+      const dose = +r.querySelector('[data-f=dose]').value || 0, price = +r.querySelector('[data-f=price]').value || 0;
+      const cl = r.dataset.kind === 'clavis', unit = r.dataset.unit;
+      const c = cl ? dose * price / 750 : dose * price / UNIT[unit][2];
+      if (cl) { base = c; baseDose = dose; }
+      total += c; r.querySelector('.fc__cost').textContent = r2(c);
+    });
+    const menu = +$('#fcPrice').value || 0, pct = menu ? total / menu * 100 : 0;
+    $('#fcCost').textContent = r2(total);
+    $('#fcPct').textContent = `${Math.round(pct)}%`;
+    $('#fcMargin').textContent = rub(Math.round(menu - total));
+    $('#fcBar').style.width = `${Math.min(pct, 100)}%`;
+    $('#fcBar').dataset.level = pct <= 22 ? 'ok' : pct <= 30 ? 'mid' : 'high';
+    $('#fcNote').textContent = baseDose ? `Основа CLAVIS даёт ${r2(base)} из ${r2(total)}. Бутылки хватит на ${Math.floor(750 / baseDose)} таких порций.` : '';
+  }
+  $('#fc').addEventListener('input', (e) => {
+    if (e.target.dataset.f === 'unit') { const r = e.target.closest('.fc__row'); r.dataset.unit = e.target.value; r.querySelector('[data-f=price] + em').textContent = UNIT[e.target.value][1]; }
+    fc();
+  });
+  $('#fc').addEventListener('click', (e) => {
+    const p = e.target.closest('[data-p]'); if (p) return fcLoad(p.dataset.p);
+    if (e.target.closest('.fc__del')) { e.target.closest('.fc__row').remove(); fc(); }
+  });
+  $('#fcAdd').addEventListener('click', () => { $('#fcRows').insertAdjacentHTML('beforeend', row(['', '', 0, 'ml', 0])); $('#fcRows .fc__row:last-child .fc__name').focus(); });
+  fcLoad('highball');
 });
 </script>
 </body>

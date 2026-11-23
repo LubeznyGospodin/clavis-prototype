@@ -7,10 +7,10 @@
 <title>Контрактное производство · CLAVIS</title>
 <meta name="description" content="Сварим ваш вкус партией от 500 литров. 30 дней от утверждённой рецептуры до отгрузки, собственная площадка в Подмосковье.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=12">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,800;1,900&family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css?v=23">
 </head>
-<body>
+<body class="dark">
 <div data-header></div>
 <main id="main">
   <section class="page-hero">
@@ -20,10 +20,7 @@
         <div><div class="eyebrow">Своя рецептура</div><h1>Сварим ваш вкус</h1></div>
         <div><p class="lead">Разработаем рецептуру, оформим документы и разольём партию на собственной площадке. Вы получаете готовый продукт под своим брендом.</p><a class="btn btn--wine" href="#form">Рассчитать партию</a></div>
       </div>
-      <div class="video">
-        <img src="img/production.webp" alt="Цех CLAVIS">
-        <div class="video__play"><div><i>▶</i>Видео о производстве CLAVIS скоро будет здесь</div></div>
-      </div>
+      <div class="reel"><iframe src="https://www.instagram.com/reel/DeMoUtoJt6_/embed/" title="Ролик о контрактном производстве CLAVIS" loading="lazy" scrolling="no" allowtransparency="true" allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>
     </div>
   </section>
 
@@ -34,6 +31,24 @@
         <div class="stat"><b>30 дней</b><span>от утверждённой рецептуры до отгрузки</span></div>
         <div class="stat"><b>от 100 000 ₽</b><span>разработка рецептуры за SKU</span></div>
         <div class="stat"><b>ХАССП</b><span>контроль на каждом этапе</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="scheme">
+    <div class="wrap">
+      <div class="section-head"><div><div class="eyebrow">Как мы работаем</div><h2>Путь вашего продукта</h2></div></div>
+      <div class="flow">
+        <div class="flow__fork">
+          <div class="flow__node flow__node--start"><span class="flow__n">Старт А</span><h3>Свой вкус</h3><p>Пришлите ТЗ или референс. Технологи сварят лабораторный образец за 5 дней, и вы проверите его слепой дегустацией.</p></div>
+          <div class="flow__node flow__node--start"><span class="flow__n">Старт Б</span><h3>Готовый хит</h3><p>Выберите любой вкус из линейки CLAVIS, который мы уже продаём. Мы выпустим его под вашим брендом за считанные дни.</p></div>
+        </div>
+        <div class="flow__node"><span class="flow__n">01 · Рецептура</span><h3>Сложный профиль без брака</h3><p>Мы сами придумываем и продаём авторские вкусы. Технологи знают, как собрать сложный профиль без мыльного привкуса и осадка и как выровнять Brix с кислотностью. Расслаиваться основа тоже не будет.</p></div>
+        <div class="flow__node"><span class="flow__n">02 · Договор</span><h3>Сроки и цена на бумаге</h3><p>Договор закрепляет за вами производственный слот, и даты мы не переносим. Процент потерь сырья тоже стоит в договоре. Отдельных счетов за мойку линии или переналадку вы от нас не получите.</p></div>
+        <div class="flow__node"><span class="flow__n">03 · Варка</span><h3>Партия от 500 литров</h3><p>Мы варим от 500 или 1000 литров, а многие заводы просят 5–10 тонн. Вы запускаете новинку или проверяете сезонный спрос и держите деньги в обороте.</p></div>
+        <div class="flow__node"><span class="flow__n">04 · Контроль</span><h3>Один вкус в каждой партии</h3><p>Лаборатория на каждой варке замеряет Brix и pH, там же проверяет плотность. Арбитражные пробы мы храним весь срок годности.</p></div>
+        <div class="flow__node"><span class="flow__n">05 · Фасовка</span><h3>Стекло или стик-пак</h3><p>В стекло мы разливаем для баров, кофеен, ресторанов и розницы. Порционные стик-паки подойдут для e-com, доставки и to-go. Декларации и сертификаты мы оформляем сами, штрихкоды тоже.</p></div>
+        <div class="flow__node flow__node--end"><span class="flow__n">Финиш</span><h3>Ваш продукт на полке</h3><a class="btn btn--wine" href="#form">Рассчитать партию</a></div>
       </div>
     </div>
   </section>
@@ -81,8 +96,8 @@
   </section>
 </main>
 <div data-footer></div>
-<script src="js/data.js?v=12"></script>
-<script src="js/site.js?v=12"></script>
+<script src="js/data.js?v=23"></script>
+<script src="js/site.js?v=23"></script>
 <script>document.addEventListener('DOMContentLoaded', () => { $('[data-consent]').innerHTML = consentField('k-consent'); });</script>
 </body>
 </html>

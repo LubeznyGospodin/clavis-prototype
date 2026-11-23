@@ -8,8 +8,8 @@
 <meta name="description" content="Кордиалы и концентраты CLAVIS: напиток за минуту, 15–40 порций из бутылки, 0% ABV. Для баров, дистрибьюторов и дома.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@1,800;1,900&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=16">
-<link rel="stylesheet" href="css/home.css?v=16">
+<link rel="stylesheet" href="css/site.css?v=23">
+<link rel="stylesheet" href="css/home.css?v=23">
 </head>
 <body class="home">
 
@@ -85,9 +85,9 @@
       <h2 class="disp dsec__title">Кому CLAVIS</h2>
       <div class="doors">
         <a class="door" href="zavedeniyam.html"><img src="img/dist-bar.webp" alt="" loading="lazy"><small>Бары, рестораны, кофейни</small><b class="disp">Заведениям</b><span>Проработаем меню с ведущими миксологами страны</span></a>
+        <a class="door" href="dlya-doma.html"><img src="img/cordial-coupe.webp" alt="" loading="lazy"><small>Магазин</small><b class="disp">Для дома</b><span>Коктейльная серия и лимонады с доставкой Ozon и СДЭК</span></a>
         <a class="door" href="distributoram.html"><img src="img/lineup.webp" alt="" loading="lazy"><small>Оптовым партнёрам</small><b class="disp">Дистрибьюторам</b><span>Растущая категория и бонусы за развитие территории</span></a>
         <a class="door" href="kontraktnoe-proizvodstvo.html"><img src="img/production.webp" alt="" loading="lazy"><small>Своя рецептура</small><b class="disp">Свой вкус</b><span>Сварим вашу основу партией от 500 литров за 30 дней</span></a>
-        <a class="door" href="dlya-doma.html"><img src="img/cordial-coupe.webp" alt="" loading="lazy"><small>Магазин</small><b class="disp">Для дома</b><span>Коктейльная серия и лимонады с доставкой Ozon и СДЭК</span></a>
       </div>
       <div class="stats" id="stats"></div>
       <div class="eyebrow" style="margin-top:56px">С CLAVIS работают федеральные сети и локальные бары</div>
@@ -116,29 +116,46 @@
   </section>
 </main>
 
-<div class="capture" id="capture" role="dialog" aria-modal="true" aria-labelledby="capTitle">
-  <div class="capture__box">
-    <button class="capture__close" type="button" aria-label="Закрыть" data-close>×</button>
-    <div class="capture__visual" id="capVisual"></div>
-    <div class="capture__copy">
-      <div class="eyebrow">Подарок от CLAVIS</div>
-      <h2 id="capTitle">У вас 30 секунд, чтобы забрать подарок</h2>
-      <div class="capture__timer" id="capTimer">0:30</div>
-      <p class="muted">Оставьте контакты и получите промокод на скидку 5% на первый заказ.</p>
-      <form class="form" id="capForm">
-        <div class="field"><label for="c-mail">E-mail</label><input id="c-mail" name="email" type="email" required autocomplete="email"></div>
-        <div class="field"><label for="c-phone">Телефон</label><input id="c-phone" name="phone" type="tel" required autocomplete="tel"></div>
-        <label class="check"><input type="checkbox" name="consent" required> <span>Согласен на обработку персональных данных по <a href="politika.html">политике</a></span></label>
-        <label class="check"><input type="checkbox" name="news"> <span>Хочу получать новости и рецепты</span></label>
-        <div class="who"><button class="btn" type="submit" value="home">Покупаю домой</button><button class="btn btn--wine" type="submit" value="pro">Я профессионал</button></div>
+<div class="gift" id="capture" role="dialog" aria-modal="true" aria-labelledby="capTitle" hidden>
+  <button class="gift__close" type="button" aria-label="Закрыть" data-close>×</button>
+  <div class="gift__inner">
+    <img class="gift__logo" src="img/logo-white.png" alt="CLAVIS">
+
+    <section class="gift__step is-on" data-step="ask">
+      <h2 class="gift__title" id="capTitle"><small>У вас</small>мистический подарок<small>на первый заказ</small></h2>
+      <p class="gift__q">Вы уже пробовали CLAVIS?</p>
+      <div class="gift__btns"><button type="button" class="gift__btn" data-go="love">Да, знаю и люблю</button><button type="button" class="gift__btn" data-go="new">Нет, но интригует</button></div>
+      <p class="gift__timer">Подарок сгорит через <b id="capTimer">0:30</b></p>
+    </section>
+
+    <section class="gift__step" data-step="form">
+      <h2 class="gift__title gift__title--sm" id="capFormTitle">Подарок почти ваш</h2>
+      <p class="gift__q gift__q--sm">Оставьте почту и телефон, и мы откроем подарок прямо здесь.</p>
+      <form class="gift__form" id="capForm">
+        <input name="email" type="email" required autocomplete="email" placeholder="E-mail" aria-label="E-mail">
+        <input name="phone" type="tel" required autocomplete="tel" placeholder="Телефон" aria-label="Телефон">
+        <label class="gift__check"><input type="checkbox" name="consent" required> <span>Согласен на обработку персональных данных по <a href="politika.html">политике</a></span></label>
+        <label class="gift__check"><input type="checkbox" name="news"> <span>Хочу получать новости и рецепты</span></label>
+        <div class="gift__btns"><button class="gift__btn" type="submit" value="home">Открыть: покупаю домой</button><button class="gift__btn gift__btn--ghost" type="submit" value="pro">Открыть: я из бара</button></div>
       </form>
-    </div>
+    </section>
+
+    <section class="gift__step" data-step="win">
+      <h2 class="gift__title"><small>Ваш подарок</small>скидка 5%</h2>
+      <p class="gift__q">Промокод <b>CLAVIS5</b> мы уже положили в корзину.</p>
+    </section>
+
+    <section class="gift__step" data-step="burn">
+      <h2 class="gift__title">Подарок сгорел</h2>
+      <p class="gift__q gift__q--sm">Тридцать секунд прошли. Заглядывайте ещё, вдруг в следующий раз повезёт.</p>
+    </section>
   </div>
+  <img class="gift__drink" src="img/pink.webp" alt="">
 </div>
 
 <div data-footer></div>
-<script src="js/data.js?v=16"></script>
-<script src="js/site.js?v=16"></script>
-<script src="js/home.js?v=16"></script>
+<script src="js/data.js?v=23"></script>
+<script src="js/site.js?v=23"></script>
+<script src="js/home.js?v=23"></script>
 </body>
 </html>

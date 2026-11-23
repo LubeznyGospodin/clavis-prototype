@@ -155,7 +155,7 @@ function header() {
   const a = (href, text) => `<a href="${href}"${href === here ? ' aria-current="page"' : ''}>${text}</a>`;
   return `<a class="sr" href="#main">К содержанию</a>
   <header class="top"><div class="wrap top__in">
-    <a href="index.html" aria-label="CLAVIS, на главную"><img class="logo" src="img/logo-dark.png" alt="CLAVIS"></a>
+    <a href="index.html" aria-label="CLAVIS, на главную"><img class="logo" src="img/logo-${document.body.classList.contains('dark') ? 'white' : 'dark'}.png" alt="CLAVIS"></a>
     <nav class="nav" aria-label="Главное меню">
       <div class="drop"><button type="button" aria-expanded="false" data-drop>Для бизнеса ▾</button>
         <div class="drop__menu">
@@ -225,7 +225,7 @@ function mount() {
     $$('.drop').forEach((d) => { if (!drop || d !== drop.parentElement) { d.classList.remove('is-open'); d.firstElementChild.setAttribute('aria-expanded', 'false'); } });
     if (drop) { const open = drop.parentElement.classList.toggle('is-open'); drop.setAttribute('aria-expanded', open); }
     const burger = e.target.closest('[data-burger]');
-    if (burger) { const open = $('.mnav').classList.toggle('is-open'); burger.setAttribute('aria-expanded', open); burger.textContent = open ? '✕' : '☰'; }
+    if (burger) { const open = $('.mnav').classList.toggle('is-open'); burger.setAttribute('aria-expanded', open); burger.textContent = open ? '✕' : '☰'; document.documentElement.classList.toggle('menu-open', open); }
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $$('.drop').forEach((d) => d.classList.remove('is-open')); });
   syncBadges();
